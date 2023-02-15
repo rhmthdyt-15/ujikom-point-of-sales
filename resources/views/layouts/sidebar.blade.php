@@ -13,7 +13,7 @@
                      </a>
                  </li>
                  <li class="menu-item">
-                     <a href="#">
+                     <a href="{{ route('produk.index') }}">
                          <i class="menu-icon fa fa-cubes">
                              </i>Produk 
                      </a>

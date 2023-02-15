@@ -14,7 +14,14 @@ return new class extends Migration
     public function up()
     {
         Schema::create('produk', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id_produk');
+            $table->unsignedInteger('id_kategori');
+            $table->string('nama_produk')->unique();
+            $table->string('merk')->nullable();
+            $table->integer('harga_beli');
+            $table->tinyInteger('diskon')->default(0);
+            $table->integer('harga_jual');
+            $table->integer('stok');
             $table->timestamps();
         });
     }
