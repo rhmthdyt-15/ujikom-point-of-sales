@@ -29,5 +29,8 @@ Route::middleware([
 
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('/kategori', KategoriController::class);
+
     Route::resource('/produk', ProdukController::class);
+    Route::post('/produk/delete-multiple', [ProdukController::class, 'deleteMultiple'])->name('produk.delete_multiple');
+    Route::post('/produk/cetak-barcode', [ProdukController::class, 'cetakBarcode'])->name('produk.cetak_barcode');
 });

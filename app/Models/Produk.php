@@ -9,26 +9,29 @@ class Produk extends Model
 {
     use HasFactory;
 
-    protected $table = 'produk';
-    protected $primaryKey = 'id_produk';
-    protected $guarded = [];
-
     // protected $table = 'produk';
+    // protected $primaryKey = 'id_produk';
+    // protected $guarded = [];
 
-    // protected $fillable = [
-    //     'nama_produk',
-    //     'id_kategori',
-    //     'merk',
-    //     'harga_beli',
-    //     'diskon',
-    //     'harga_jual',
-    //     'stok'
-    // ];
+    protected $table = 'produk';
 
-    // protected $hidden = [];
+    protected $fillable = [
+        'nama_produk',
+        'id_kategori',
+        'kode_produk',
+        'merk',
+        'harga_beli',
+        'diskon',
+        'harga_jual',
+        'stok'
+    ];
 
-    // public function kategori()
-    // {
-    //     return $this->belongsTo(Kategori::class, 'id_kategori', 'id');
-    // }
+    protected $hidden = [];
+
+    protected $primaryKey = 'id_produk';
+
+    public function kategori()
+    {
+        return $this->belongsTo(Kategori::class, 'id_kategori', 'id');
+    }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Produk;
 use App\Models\Kategori;
-
+use PhpParser\Node\Stmt\Return_;
 
 class ProdukController extends Controller
 {
@@ -17,8 +17,15 @@ class ProdukController extends Controller
     public function index()
     {
         $kategori = Kategori::all()->pluck('nama_kategori', 'id_kategori');
+        $produk = Produk::all();
+        $produk = Produk::join('kategori', 'produk.id_kategori', '=', 'kategori.id_kategori')
+            ->select('produk.*', 'kategori.nama_kategori')
+            ->get();
 
-        return view('pages.produk.index', compact('kategori'));
+        return view('pages.produk.index', [
+            'kategori' => $kategori,
+            'produk' => $produk
+        ]);
     }
 
     /**
@@ -78,7 +85,15 @@ class ProdukController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $produk = Produk::find($id);
+
+        if (!$produk) {
+            return redirect()->route('produk.index')->with(['error' => 'Produk Tidak Ditemukan']);
+        }
+
+        $produk->update($request->all());
+
+        return redirect()->route('produk.index')->with(['success' => 'Berhasil Diupdate']);
     }
 
     /**
@@ -89,6 +104,25 @@ class ProdukController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $produk = Produk::find($id);
+        $produk->delete();
+
+        return redirect()->route('produk.index')->with(['success' => 'Berhasil Dihapus!']);
+    }
+
+    public function deleteMultiple(Request $request)
+    {
+        $ids = $request->ids ?? [];
+
+        if (!empty($ids)) {
+            foreach ($ids as $id) {
+                $produk = Produk::find($id);
+                if (!empty($produk)) {
+                    $produk->delete();
+                }
+            }
+        }
+
+        return redirect()->back();
     }
 }
