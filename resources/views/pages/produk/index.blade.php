@@ -17,7 +17,7 @@ Produk
                 </button>
                 @includeIf('pages.produk.tambah')
     
-                <form action="{{ route('produk.delete_multiple') }}" method="POST">
+                <form action="{{ route('produk.delete_multiple') }}" method="POST" id="form-delete-multiple">
                     @method('DELETE')
                     @csrf
                     <button type="submit" class="btn btn-danger mb-1 mx-1" id="btn-delete-multiple">
@@ -40,68 +40,72 @@ Produk
             @endif
 
             <div class="table mt-3">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>
-                                <input type="checkbox" id="check-all" />
-                            </th>
-                            <th>No</th>
-                            <th>Kode</th>
-                            <th>Nama</th>
-                            <th>Kategori</th>
-                            <th>Merk</th>
-                            <th>Harga Beli</th>
-                            <th>Harga Jual</th>
-                            <th>Diskon</th>
-                            <th>Stok</th>
-                            <th><i class="fa fa-cog"></i></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($produk as $key => $row)
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="ids[]" class="check-item" value="{{ $row->id_produk }}" />
-                            </td>
-                            <td >{{ $key + 1 }}</td>
-                            <td >{{ $row->kode_produk }}</td>
-                            <td >{{ $row->nama_produk }}</td>
-                            <td >{{ $row->nama_kategori }}</td>
-                            <td >{{ $row->merk }}</td>
-                            <td >{{ $row->harga_jual }}</td>
-                            <td >{{ $row->harga_beli }}</td>
-                            <td >{{ $row->diskon }}</td>
-                            <td >{{ $row->stok }}</td>
-                            <td>
-                                <div class="d-flex">
-                                    <button type="button" class="btn btn-warning mb-1" data-toggle="modal"
-                                        data-target="#largeModal-{{ $row->id_produk }}">
-                                        <i class="fa fa-solid fa-pencil text-white"></i></button>
-                                    </button>
-                                    @includeIf('pages.produk.edit', ['produk' => $row])
-    
-                                    <form method="POST" action="{{ route('produk.destroy', $row->id_produk) }}">
-                                        @method('DELETE')
-                                        @csrf
-                                        <button type="submit" class="btn btn-danger ms-1 show_confirm" data-toggle="tooltip" title='Delete' style="margin-left: 5px">
-                                            <i class="fa fa-solid fa-trash text-white"></i>
+                <form action="" method="post" class="form-produk">
+                    @csrf
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <input type="checkbox" id="check_all">
+                                </th>
+                                <th>No</th>
+                                <th>Kode</th>
+                                <th>Nama</th>
+                                <th>Kategori</th>
+                                <th>Merk</th>
+                                <th>Harga Beli</th>
+                                <th>Harga Jual</th>
+                                <th>Diskon</th>
+                                <th>Stok</th>
+                                <th><i class="fa fa-cog"></i></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($produk as $key => $row)
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="ids" class="checkBoxClass" value="{{ $row->id_produk }}">
+                                </td>
+                                <td >{{ $key + 1 }}</td>
+                                <td >{{ $row->kode_produk }}</td>
+                                <td >{{ $row->nama_produk }}</td>
+                                <td >{{ $row->nama_kategori }}</td>
+                                <td >{{ $row->merk }}</td>
+                                <td >{{ $row->harga_jual }}</td>
+                                <td >{{ $row->harga_beli }}</td>
+                                <td >{{ $row->diskon }}</td>
+                                <td >{{ $row->stok }}</td>
+                                <td>
+                                    <div class="d-flex">
+                                        <button type="button" class="btn btn-warning mb-1" data-toggle="modal"
+                                            data-target="#largeModal-{{ $row->id_produk }}">
+                                            <i class="fa fa-solid fa-pencil text-white"></i></button>
                                         </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="6" class="text-center">Data Masih Kosong!</td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                                        @includeIf('pages.produk.edit', ['produk' => $row])
+        
+                                        <form method="POST" action="{{ route('produk.destroy', $row->id_produk) }}">
+                                            @method('DELETE')
+                                            @csrf
+                                            <button type="submit" class="btn btn-danger ms-1 show_confirm" data-toggle="tooltip" title='Delete' style="margin-left: 5px">
+                                                <i class="fa fa-solid fa-trash text-white"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="6" class="text-center">Data Masih Kosong!</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </form>
             </div>
         </div>
     </div>
 </div>
+
 @push('scripts')
     <script type="text/javascript">
  
@@ -129,6 +133,15 @@ Produk
        });
      });
  
-</script>    
+</script>  
+
+<script>
+    $(function() {
+        $("#check_all").click(function() {
+            $(".check_all").prop('checked', $(this).prop('checked'));
+        });
+    });
+</script>
+
 @endpush
 @endsection

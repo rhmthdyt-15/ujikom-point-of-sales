@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Produk;
 use App\Models\Kategori;
+use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Stmt\Return_;
 
 class ProdukController extends Controller
@@ -112,17 +113,13 @@ class ProdukController extends Controller
 
     public function deleteMultiple(Request $request)
     {
-        $ids = $request->ids ?? [];
+        $ids = $request->ids;
 
-        if (!empty($ids)) {
-            foreach ($ids as $id) {
-                $produk = Produk::find($id);
-                if (!empty($produk)) {
-                    $produk->delete();
-                }
-            }
+        if (count($ids) > 0) {
+            DB::table('produk')->whereIn('id_produk', $ids)->delete();
+            return redirect()->back()->with('success', 'Produk berhasil dihapus.');
+        } else {
+            return redirect()->back()->with('error', 'Anda belum memilih produk yang akan dihapus.');
         }
-
-        return redirect()->back();
     }
 }
