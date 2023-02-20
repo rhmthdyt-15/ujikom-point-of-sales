@@ -36,7 +36,7 @@ Kategori
                     <tbody>
                         @forelse ($kategori as $key => $row)
                         <tr>
-                            <td >{{ $key + 1 }}</td>
+                            <td >{{ ($kategori->currentPage() - 1) * $kategori->perPage() + $key + 1 }}</td>
                             <td >{{ $row->nama_kategori }}</td>
                             <td>
                                 <div class="d-flex">
@@ -63,6 +63,9 @@ Kategori
                         @endforelse
                     </tbody>
                 </table>
+                <div class="pagination">
+                    {{ $kategori->links('pagination::bootstrap-4') }}
+                </div>
             </div>
         </div>
     </div>

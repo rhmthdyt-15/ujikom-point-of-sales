@@ -17,13 +17,15 @@ return new class extends Migration
             $table->increments('id_produk');
             $table->unsignedInteger('id_kategori');
             $table->string('kode_produk')->unique();
-            $table->string('nama_produk')->unique();
+            $table->string('nama_produk');
             $table->string('merk')->nullable();
             $table->integer('harga_beli');
             $table->tinyInteger('diskon')->default(0);
             $table->integer('harga_jual');
             $table->integer('stok');
             $table->timestamps();
+
+            $table->foreign('id_kategori')->references('id_kategori')->on('kategori')->onDelete('cascade');
         });
     }
 

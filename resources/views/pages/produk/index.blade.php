@@ -25,9 +25,9 @@ Produk
                     </button>
                 </form>
                 
-               <button actioon="{{ route('produk.cetak_barcode') }}" type="button" class="btn btn-primary mb-1">
-                   <i class="fa fa-barcode"></i> Cetak Barcode</button>
-               </button>
+                <button onclick="cetakBarcode('{{ route('produk.cetak_barcode') }}')" type="button" class="btn btn-primary mb-1">
+                    <i class="fa fa-barcode"></i> Cetak Barcode
+                </button>
             </div>
 
             @if(Session::has('success'))
@@ -40,7 +40,7 @@ Produk
             @endif
 
             <div class="table mt-3">
-                <form action="" method="post" class="form-produk">
+                <form action='{{ route('produk.cetak_barcode') }}' method="post" class="form-produk">
                     @csrf
                     <table class="table table-bordered">
                         <thead>
@@ -64,10 +64,14 @@ Produk
                             @forelse ($produk as $key => $row)
                             <tr>
                                 <td>
-                                    <input type="checkbox" name="ids" class="checkBoxClass" value="{{ $row->id_produk }}">
+                                    <input type="checkbox" name="ids[]" class="checkBoxClass" value="{{ $row->id_produk }}">
                                 </td>
                                 <td >{{ $key + 1 }}</td>
-                                <td >{{ $row->kode_produk }}</td>
+                                <td >
+                                    <span class="btn btn-sm btn-success">
+                                        {{ $row->kode_produk }}
+                                    </span> 
+                                </td>
                                 <td >{{ $row->nama_produk }}</td>
                                 <td >{{ $row->nama_kategori }}</td>
                                 <td >{{ $row->merk }}</td>
@@ -133,15 +137,86 @@ Produk
        });
      });
  
-</script>  
-
-<script>
-    $(function() {
-        $("#check_all").click(function() {
-            $(".check_all").prop('checked', $(this).prop('checked'));
+     $(document).ready(function() {
+        $(function() {
+            $("#check_all").click(function() {
+                $(".checkBoxClass").prop('checked', $(this).prop('checked'));
+            });
+        });
+        
+        $('#form-delete-multiple').submit(function(event) {
+            event.preventDefault();
+            var selected = [];
+            $('input[type=checkbox][name=ids]:checked').each(function() {
+                selected.push($(this).val());
+            });
+    
+            if (selected.length > 0) {
+                swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then(function(result) {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '{{ route('produk.delete_multiple') }}',
+                            type: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data: {
+                                ids: selected
+                            },
+                            success: function(response) {
+                                swal.fire({
+                                    title: 'Deleted!',
+                                    text: 'Your data has been deleted.',
+                                    icon: 'success'
+                                }).then(function() {
+                                    location.reload();
+                                });
+                            },
+                            error: function(xhr) {
+                                swal.fire({
+                                    title: 'Oops...',
+                                    text: xhr.statusText,
+                                    icon: 'error'
+                                });
+                            }
+                        });
+                    }
+                });
+            } else {
+                swal.fire({
+                    title: 'Oops...',
+                    text: 'Please select at least one item to delete.',
+                    icon: 'error'
+                });
+            }
         });
     });
-</script>
 
+
+    function cetakBarcode(url) {
+        if ($('input:checked').length < 1) {
+            alert('Pilih data yang akan dicetak');
+            return;
+        } else if ($('input:checked').length < 3) {
+            alert('Pilih minimal 3 data untuk dicetak');
+            return;
+        } else {
+            $('.form-produk')
+                // .attr('target', '_blank')
+                // .attr('action', url)
+                .submit();
+
+            // window.open(url, '_blank')
+        }
+    }
+</script>  
 @endpush
 @endsection

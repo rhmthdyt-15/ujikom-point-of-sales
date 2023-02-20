@@ -5,7 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Produk;
 use App\Models\Kategori;
+use Barryvdh\DomPDF\Facade\Pdf;
+use DNS1D;
+use DNS2D;
+
+
 use Illuminate\Support\Facades\DB;
+use Milon\Barcode\DNS1D as BarcodeDNS1D;
 use PhpParser\Node\Stmt\Return_;
 
 class ProdukController extends Controller
@@ -113,13 +119,26 @@ class ProdukController extends Controller
 
     public function deleteMultiple(Request $request)
     {
-        $ids = $request->ids;
+        $ids = $request->input('ids');
 
-        if (count($ids) > 0) {
-            DB::table('produk')->whereIn('id_produk', $ids)->delete();
-            return redirect()->back()->with('success', 'Produk berhasil dihapus.');
-        } else {
-            return redirect()->back()->with('error', 'Anda belum memilih produk yang akan dihapus.');
+        Produk::whereIn('id_produk', $ids)->delete();
+
+        return response()->json([
+            'message' => 'Selected items have been deleted successfully.'
+        ], 200);
+    }
+
+    public function cetakBarcode(Request $request)
+    {
+        $dataproduk = array();
+        foreach ($request->ids as $id) {
+            $produk = Produk::find($id);
+            $dataproduk[] = $produk;
         }
+
+        $no  = 1;
+        $pdf = Pdf::loadView('pages.produk.barcode', compact('dataproduk', 'no'));
+        $pdf->setPaper('a4', 'potrait');
+        return $pdf->stream('produk.pdf');
     }
 }
