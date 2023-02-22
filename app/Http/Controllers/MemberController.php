@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Member;
 use Illuminate\Http\Request;
-use App\Models\Kategori;
-use Illuminate\Support\Str;
 
-class KategoriController extends Controller
+class MemberController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,15 +15,15 @@ class KategoriController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $kategori = Kategori::query();
+        $member = Member::query();
 
         if (!empty($search)) {
-            $kategori->where('nama_kategori', 'LIKE', '%' . $search . '%');
+            $member->where('nama', 'LIKE', '%' . $search . '%');
         }
 
-        $kategori = $kategori->paginate(10);
+        $member = $member->paginate(10);
 
-        return view('pages.kategori.index', compact('kategori'));
+        return view('pages.member.index', compact('member'));
     }
 
     /**
@@ -45,15 +44,12 @@ class KategoriController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'nama_kategori' => 'required|min:4',
-        ]);
+        $member = member::latest()->first() ?? new member();
+        $request['kode_member'] = tambah_nol_didepan((int)$member->kode_member + 1, 5);
 
-        $kategori = Kategori::create([
-            'nama_kategori' => $request->nama_kategori,
-        ]);
+        $member = member::create($request->all());
 
-        return redirect()->route('kategori.index')->with(['success' => 'Berhasil Ditambahkan']);
+        return redirect()->route('member.index')->with(['success' => 'Berhasil Ditambahkan']);
     }
 
     /**
@@ -85,20 +81,17 @@ class KategoriController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'nama_kategori' => 'required|min:4',
-        ]);
+        $member = Member::find($id);
 
-        $data = $request->all();
-        // $data = Str::slug($request->nama_kategori);
+        if (!$member) {
+            return redirect()->route('member.index')->with(['error' => 'member Tidak Ditemukan']);
+        }
 
-        $kategori = Kategori::findOrFail($id);
-        $kategori->update($data);
+        $member->update($request->all());
 
-        return redirect()->route('kategori.index')->with(['success' => 'Data Berhasil Diupdate']);
+        return redirect()->route('member.index')->with(['success' => 'Berhasil Diupdate']);
     }
 
     /**
@@ -109,9 +102,9 @@ class KategoriController extends Controller
      */
     public function destroy($id)
     {
-        $kategori = Kategori::find($id);
-        $kategori->delete();
+        $member = Member::find($id);
+        $member->delete();
 
-        return redirect()->route('kategori.index')->with(['success' => 'Data Berhasil Dihapus']);
+        return redirect()->route('member.index')->with(['success' => 'Berhasil Dihapus!']);
     }
 }

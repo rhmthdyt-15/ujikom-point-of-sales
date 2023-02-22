@@ -2,6 +2,11 @@
      #weatherWidget .currentDesc {
          color: #ffffff!important;
      }
+
+     .pagination {
+        display: ;
+        justify-content: flex-end;
+     }
          .traffic-chart {
              min-height: 335px;
          }

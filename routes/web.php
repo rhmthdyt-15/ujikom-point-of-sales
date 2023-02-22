@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProdukController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,7 +31,11 @@ Route::middleware([
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('/kategori', KategoriController::class);
 
+    //Produk
     Route::resource('/produk', ProdukController::class);
     Route::delete('/produk/delete/multiple', [ProdukController::class, 'deleteMultiple'])->name('produk.delete_multiple');
     Route::put('/produk/cetak/barcode', [ProdukController::class, 'cetakBarcode'])->name('produk.cetak_barcode');
+
+    //Member
+    Route::resource('/member', MemberController::class);
 });

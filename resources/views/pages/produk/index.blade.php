@@ -135,31 +135,93 @@ Produk
                )
            }
        });
-     });
+    });
  
-     $(document).ready(function() {
-        $(function() {
-            $("#check_all").click(function() {
-                $(".checkBoxClass").prop('checked', $(this).prop('checked'));
-            });
-        });
+    // $(document).ready(function() {
+    //     $(function() {
+    //         $("#check_all").click(function() {
+    //             $(".checkBoxClass").prop('checked', $(this).prop('checked'));
+    //         });
+    //     });
         
+    //     $('#form-delete-multiple').submit(function(event) {
+    //         event.preventDefault();
+    //         var selected = [];
+    //         $('input[type=checkbox][name=ids]:checked').each(function() {
+    //             selected.push($(this).val());
+    //         });
+    
+    //         if (selected.length > 0) {
+    //             swal.fire({
+    //                 title: 'Are you sure?',
+    //                 text: "You won't be able to revert this!",
+    //                 icon: 'warning',
+    //                 showCancelButton: true,
+    //                 confirmButtonColor: '#3085d6',
+    //                 cancelButtonColor: '#d33',
+    //                 confirmButtonText: 'Yes, delete it!'
+    //             }).then(function(result) {
+    //                 if (result.isConfirmed) {
+    //                     $.ajax({
+    //                         url: '{{ route('produk.delete_multiple') }}',
+    //                         type: 'DELETE',
+    //                         headers: {
+    //                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //                         },
+    //                         data: {
+    //                             ids: selected
+    //                         },
+    //                         success: function(response) {
+    //                             swal.fire({
+    //                                 title: 'Deleted!',
+    //                                 text: 'Your data has been deleted.',
+    //                                 icon: 'success'
+    //                             }).then(function() {
+    //                                 location.reload();
+    //                             });
+    //                         },
+    //                         error: function(xhr) {
+    //                             swal.fire({
+    //                                 title: 'Oops...',
+    //                                 text: xhr.statusText,
+    //                                 icon: 'error'
+    //                             });
+    //                         }
+    //                     });
+    //                 }
+    //             });
+    //         } else {
+    //             swal.fire({
+    //                 title: 'Oops...',
+    //                 text: 'Please select at least one item to delete.',
+    //                 icon: 'error'
+    //             });
+    //         }
+    //     });
+    // });
+
+    
+    $(document).ready(function() {
+        $("#check_all").click(function() {
+            $(".checkBoxClass").prop('checked', $(this).prop('checked'));
+        });
+
         $('#form-delete-multiple').submit(function(event) {
             event.preventDefault();
             var selected = [];
-            $('input[type=checkbox][name=ids]:checked').each(function() {
+            $('input[type=checkbox][name="ids[]"]:checked').each(function() {
                 selected.push($(this).val());
             });
-    
+
             if (selected.length > 0) {
                 swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
+                    title: 'Apakah Anda yakin?',
+                    text: "Anda akan menghapus produk yang dipilih!",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
+                    confirmButtonText: 'Ya, hapus!'
                 }).then(function(result) {
                     if (result.isConfirmed) {
                         $.ajax({
@@ -171,35 +233,45 @@ Produk
                             data: {
                                 ids: selected
                             },
-                            success: function(response) {
-                                swal.fire({
-                                    title: 'Deleted!',
-                                    text: 'Your data has been deleted.',
-                                    icon: 'success'
-                                }).then(function() {
-                                    location.reload();
-                                });
+                            success: function(data) {
+                                location.reload();
                             },
-                            error: function(xhr) {
-                                swal.fire({
-                                    title: 'Oops...',
-                                    text: xhr.statusText,
-                                    icon: 'error'
-                                });
+                            error: function(data) {
+                                console.log('Error:', data);
                             }
                         });
                     }
                 });
             } else {
                 swal.fire({
-                    title: 'Oops...',
-                    text: 'Please select at least one item to delete.',
-                    icon: 'error'
+                    title: 'Tidak Ada Produk yang Dipilih',
+                    text: "Silakan pilih produk yang ingin dihapus!",
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'OK'
                 });
             }
         });
     });
 
+    //apa
+
+    // function cetakBarcode(url) {
+    //     if ($('input:checked').length < 1) {
+    //         alert('Pilih data yang akan dicetak');
+    //         return;
+    //     } else if ($('input:checked').length < 3) {
+    //         alert('Pilih minimal 3 data untuk dicetak');
+    //         return;
+    //     } else {
+    //         $('.form-produk')
+                // .attr('target', '_blank')
+                // .attr('action', url)
+                // .submit();
+
+    //         // window.open(url, '_blank')
+    //     }
+    // }
 
     function cetakBarcode(url) {
         if ($('input:checked').length < 1) {
@@ -210,11 +282,10 @@ Produk
             return;
         } else {
             $('.form-produk')
-                // .attr('target', '_blank')
-                // .attr('action', url)
+                .attr('target', '_blank')
+                .attr('action', url)
                 .submit();
 
-            // window.open(url, '_blank')
         }
     }
 </script>  

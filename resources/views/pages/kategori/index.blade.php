@@ -11,10 +11,23 @@ Kategori
             <strong>Data Kategori</strong>
         </div>
         <div class="card-body">
-            <button type="button" class="btn btn-success mb-1" data-toggle="modal" data-target="#largeModal">
-                <i class="fa fa-plus-circle"></i> Tambah</button>
-            </button>
-            @includeIf('pages.kategori.tambah')
+            <div class="d-flex align-items-center mb-3">
+                <button type="button" class="btn btn-success mr-1" data-toggle="modal" data-target="#largeModal">
+                    <i class="fa fa-plus-circle"></i> Tambah</button>
+                @includeIf('pages.kategori.tambah')
+
+                <form class="ml-auto" action="{{ route('kategori.index') }}" method="GET">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="search" placeholder="Search...">
+                        <div class="input-group-append">
+                            <button class="btn btn-secondary" type="submit">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
             @if(Session::has('success'))
             <div class="sufee-alert alert with-close alert-success alert-dismissible fade show mt-3">
                 {{ session('success') }}
@@ -34,9 +47,10 @@ Kategori
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($kategori as $key => $row)
+                        @forelse ($kategori as $index => $row)
                         <tr>
-                            <td >{{ ($kategori->currentPage() - 1) * $kategori->perPage() + $key + 1 }}</td>
+                            <td>{{ ($kategori->currentPage() - 1) * $kategori->perPage() + $loop->iteration }}</td>
+                            {{-- <td >{{ ($kategori->currentPage() - 1) * $kategori->perPage() + $key + 1 }}</td> --}}
                             <td >{{ $row->nama_kategori }}</td>
                             <td>
                                 <div class="d-flex">
@@ -63,7 +77,7 @@ Kategori
                         @endforelse
                     </tbody>
                 </table>
-                <div class="pagination">
+                <div class="pagination w-full flex justify-end">
                     {{ $kategori->links('pagination::bootstrap-4') }}
                 </div>
             </div>

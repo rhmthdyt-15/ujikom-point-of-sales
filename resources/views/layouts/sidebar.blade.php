@@ -6,7 +6,7 @@
                      <a href="index.html"><i class="menu-icon fa fa-tachometer"></i>Dashboard </a>
                  </li>
                  <li class="menu-title">MASTER</li><!-- /.menu-title -->
-                 <li class={{ request()->is('kategori*') ? 'active' : '' }} "menu-item">
+                 <li class="{{ request()->is('kategori*') ? 'active' : '' }} menu-item">
                      <a href="{{ route('kategori.index') }}">
                          <i class="menu-icon fa fa-cube">
                              </i>Kategori 
@@ -18,8 +18,8 @@
                              </i>Produk 
                      </a>
                  </li>
-                 <li class="menu-item">
-                     <a href="#">
+                 <li class="{{ request()->is('member*') ? 'active' : '' }} menu-item">
+                     <a href="{{ route('member.index') }}">
                          <i class="menu-icon fa fa-id-card">
                              </i>Member
                      </a>

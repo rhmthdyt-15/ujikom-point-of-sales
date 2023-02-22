@@ -29,7 +29,6 @@
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@3.9.0/dist/fullcalendar.min.css" rel="stylesheet" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-
     @include('layouts.style')
 </head>
 

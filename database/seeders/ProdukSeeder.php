@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Kategori;
+use App\Models\Produk;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class KategoriSeeder extends Seeder
+class ProdukSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,8 +15,8 @@ class KategoriSeeder extends Seeder
      */
     public function run()
     {
-        Kategori::factory()
-            ->count(20)
+        Produk::factory()
+            ->count(50)
             ->create();
     }
 }
