@@ -26,6 +26,8 @@
                 width="180"
                 height="60"> --}}
                 {!! DNS2D::getBarcodeHTML('4445645656', 'QRCODE', 5, 5); !!}
+                {!! DNS2D::getBarcodeHTML($produk->kode_produk ?? '', 'PHARMA2T'); !!}
+
                 <br>
                 {{ $produk->kode_produk }}
             </td>

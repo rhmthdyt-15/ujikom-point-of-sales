@@ -24,8 +24,8 @@
                              </i>Member
                      </a>
                  </li>
-                 <li class="menu-item">
-                     <a href="#">
+                 <li class="{{ request()->is('supplier*') ? 'active' : '' }} menu-item">
+                     <a href="{{ route('supplier.index') }}">
                          <i class="menu-icon fa fa-truck">
                              </i>Supplier
                      </a>

@@ -17,13 +17,13 @@ Member
                 </button>
                 @includeIf('pages.member.tambah')
                 
-                {{-- <form action="{{ route('member.delete_multiple') }}" method="POST" id="form-delete-multiple">
+                <form action="{{ route('member.delete_multiple') }}" method="POST" id="form-delete-multiple">
                     @method('DELETE')
                     @csrf
                     <button type="submit" class="btn btn-danger mb-1 mx-1" id="btn-delete-multiple">
                         <i class="fa fa-trash"></i> Hapus
                     </button>
-                </form> --}}
+                </form>
                 
                 {{-- <button onclick="cetakBarcode('{{ route('member.cetak_barcode') }}')" type="button" class="btn btn-primary mb-1">
                     <i class="fa fa-barcode"></i> Cetak Member
@@ -142,6 +142,58 @@ Member
      });
 
     //multiple
+    $(document).ready(function() {
+        $("#check_all").click(function() {
+            $(".checkBoxClass").prop('checked', $(this).prop('checked'));
+        });
+
+        $('#form-delete-multiple').submit(function(event) {
+            event.preventDefault();
+            var selected = [];
+            $('input[type=checkbox][name="ids[]"]:checked').each(function() {
+                selected.push($(this).val());
+            });
+
+            if (selected.length > 0) {
+                swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Anda akan menghapus member yang dipilih!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, hapus!'
+                }).then(function(result) {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '{{ route('member.delete_multiple') }}',
+                            type: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data: {
+                                ids: selected
+                            },
+                            success: function(data) {
+                                location.reload();
+                            },
+                            error: function(data) {
+                                console.log('Error:', data);
+                            }
+                        });
+                    }
+                });
+            } else {
+                swal.fire({
+                    title: 'Tidak Ada member yang Dipilih',
+                    text: "Silakan pilih member yang ingin dihapus!",
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    });
  
 </script>    
 @endpush
