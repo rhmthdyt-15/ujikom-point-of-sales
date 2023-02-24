@@ -1,7 +1,7 @@
-<div class="modal fade" id="largeModal-{{ $row->id_member }}" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"
+<div class="modal fade" id="largeModal-{{ $row->id_member }}-{{ $key }}" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <form action="{{ route('member.update', ['member' => $member->id_member]) }}" method="post" class="form-horizontal">
+        <form action="{{ route('member.update', ['member' => $row->id_member]) }}" method="post" class="form-horizontal">
             @csrf
             @method('put')
 

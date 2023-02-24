@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\MemberController;
-use App\Http\Controllers\PengeluaranController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
@@ -40,11 +39,11 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Member
     Route::resource('/member', MemberController::class);
-    Route::delete('/member/delete/multiple', [ProdukController::class, 'deleteMultiple'])->name('member.delete_multiple');
+    Route::delete('/member/delete/multiple', [MemberController::class, 'deleteMultiple'])->name('member.delete_multiple');
+    Route::get('/member/cetak/member', [MemberController::class, 'cetakMember'])->name('member.cetak_member');
 
     //supplier
     Route::resource('/supplier', SupplierController::class);
 
     //pengeluaran
-    Route::resource('/pengeluaran', PengeluaranController::class);
 });

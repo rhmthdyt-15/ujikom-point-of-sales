@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Member;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class MemberController extends Controller
@@ -83,13 +84,15 @@ class MemberController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $member = Member::find($id);
+        // $member = Member::find($id);
 
-        if (!$member) {
-            return redirect()->route('member.index')->with(['error' => 'member Tidak Ditemukan']);
-        }
+        // if (!$member) {
+        //     return redirect()->route('member.index')->with(['error' => 'member Tidak Ditemukan']);
+        // }
 
-        $member->update($request->all());
+        // $member->update($request->all());
+
+        $member = Member::find($id)->update($request->all());
 
         return redirect()->route('member.index')->with(['success' => 'Berhasil Diupdate']);
     }
@@ -117,5 +120,34 @@ class MemberController extends Controller
         return response()->json([
             'message' => 'Selected items have been deleted successfully.'
         ], 200);
+    }
+
+    public function cetakMember(Request $request)
+    {
+        $datamember = array();
+        foreach ($request->ids as $id) {
+            $member = Member::find($id);
+            $datamember[] = $member;
+        }
+
+        return $datamember;
+        $no  = 1;
+        $pdf = Pdf::loadView('pages.member.cetak', compact('data$datamember', 'no'));
+        $pdf->setPaper('a4', 'potrait');
+        return $pdf->stream('member.pdf');
+        // $datamember = array();
+        // if (!empty($request->id_member)) {
+        //     foreach ($request->id_member as $id) {
+        //         $member = Member::find($id);
+        //         $datamember[] = $member;
+        //     }
+        // }
+
+        // return $datamember;
+
+        // $no = 1;
+        // $pdf = Pdf::loadView('member.barcode', compact('datamember', 'no'));
+        // $pdf->setPaper('a4', 'potrait');
+        // return $pdf->stream('member.pdf');
     }
 }

@@ -12,7 +12,7 @@ Member
         </div>
         <div class="card-body">
             <div class="d-flex align-items-center mb-3">
-               <button type="button" class="btn btn-success mb-1" data-toggle="modal" data-target="#largeModal">
+               <button type="button" class="btn btn-outline-success mb-1" data-toggle="modal" data-target="#largeModal">
                     <i class="fa fa-plus-circle"></i> Tambah</button>
                 </button>
                 @includeIf('pages.member.tambah')
@@ -20,14 +20,14 @@ Member
                 <form action="{{ route('member.delete_multiple') }}" method="POST" id="form-delete-multiple">
                     @method('DELETE')
                     @csrf
-                    <button type="submit" class="btn btn-danger mb-1 mx-1" id="btn-delete-multiple">
+                    <button type="submit" class="btn btn-outline-danger mb-1 mx-1" id="btn-delete-multiple">
                         <i class="fa fa-trash"></i> Hapus
                     </button>
                 </form>
                 
-                {{-- <button onclick="cetakBarcode('{{ route('member.cetak_barcode') }}')" type="button" class="btn btn-primary mb-1">
-                    <i class="fa fa-barcode"></i> Cetak Member
-                </button> --}}
+                <button onclick="cetakMember('{{ route('member.cetak_member') }}')" type="button" class="btn btn-outline-primary mb-1">
+                    <i class="fa fa-id-card"></i> Cetak Member
+                </button>
 
                 <form class="ml-auto" action="{{ route('member.index') }}" method="GET">
                     <div class="input-group">
@@ -79,21 +79,22 @@ Member
                                      </span> 
                                  </td>
                                  <td >{{ $row->nama }}</td>
-                                 <td >{{ $row->alamat }}</td>
                                  <td >{{ $row->telepon }}</td>
+                                 <td >{{ $row->alamat }}</td>
                                  <td>
                                      <div class="d-flex">
-                                         <button type="button" class="btn btn-warning mb-1" data-toggle="modal"
-                                             data-target="#largeModal-{{ $row->id_member }}">
-                                             <i class="fa fa-solid fa-pencil text-white"></i></button>
+                                         <button type="button" class="btn btn-outline-warning mb-1" data-toggle="modal"
+                                             data-target="#largeModal-{{ $row->id_member }}-{{ $key }}">
+                                             <i class="fa fa-solid fa-pencil"></i></button>
                                          </button>
                                          @includeIf('pages.member.edit', ['member' => $row])
+
          
                                          <form method="POST" action="{{ route('member.destroy', $row->id_member) }}">
                                              @method('DELETE')
                                              @csrf
-                                             <button type="submit" class="btn btn-danger ms-1 show_confirm" data-toggle="tooltip" title='Delete' style="margin-left: 5px">
-                                                 <i class="fa fa-solid fa-trash text-white"></i>
+                                             <button type="submit" class="btn btn-outline-danger ms-1 show_confirm" data-toggle="tooltip" title='Delete' style="margin-left: 5px">
+                                                 <i class="fa fa-solid fa-trash"></i>
                                              </button>
                                          </form>
                                      </div>
@@ -194,6 +195,20 @@ Member
             }
         });
     });
+
+    function cetakMember(url) {
+        if ($('input:checked').length < 1) {
+            alert('Pilih data yang akan dicetak');
+            return;
+        } else {
+            $('.form-member')
+                .attr('target', '_blank')
+                .attr('action', url)
+                .submit();
+
+        }
+    }
+    
  
 </script>    
 @endpush

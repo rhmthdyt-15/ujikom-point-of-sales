@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Member;
 use App\Models\Supplier;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
@@ -92,17 +91,13 @@ class SupplierController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'nama' => 'required|string|max:100',
-            'telepon' => 'required|string|max:12',
-            'alamat' => 'required|string|max:255',
-        ]);
+        $supplier = Supplier::find($id);
 
-        $data = $request->all();
-        // $data = Str::slug($request->nama_kategori);
+        if (!$supplier) {
+            return redirect()->route('su$supplier.index')->with(['error' => 'su$supplier Tidak Ditemukan']);
+        }
 
-        $supplier = Supplier::findOrFail($id);
-        $supplier->update($data);
+        $supplier->update($request->all());
 
         return redirect()->route('supplier.index')->with(['success' => "Data Berhasil Diupdate!"]);
     }
