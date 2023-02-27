@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\PembelianController;
+use App\Http\Controllers\PengeluaranController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
@@ -46,4 +48,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/supplier', SupplierController::class);
 
     //pengeluaran
+    Route::resource('/pengeluaran', PengeluaranController::class);
+
+    //pembeian
+    Route::resource('/pembelian', PembelianController::class);
 });

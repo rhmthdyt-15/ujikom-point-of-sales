@@ -6,8 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Produk;
 use App\Models\Kategori;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Milon\Barcode\DNS1D;
-use Milon\Barcode\DNS2D;
+// use Milon\Barcode\DNS1D;
+// use Milon\Barcode\DNS2D;
+use Picqer\Barcode\BarcodeGeneratorHTML;
 
 
 use Illuminate\Support\Facades\DB;
@@ -136,20 +137,29 @@ class ProdukController extends Controller
             $dataproduk[] = $produk;
         }
 
+        // Generate barcode for each product
+        $barcodes = array();
+        $generator = new BarcodeGeneratorHTML();
+        foreach ($dataproduk as $produk) {
+            $barcodes[] = $generator->getBarcode($produk->kode_produk, $generator::TYPE_CODE_128);
+        }
+
         $no  = 1;
-        $pdf = Pdf::loadView('pages.produk.barcode', compact('dataproduk', 'no'));
-        $pdf->setPaper('a4', 'potrait');
+        $pdf = Pdf::loadView('pages.produk.barcode', compact('dataproduk', 'barcodes', 'no'));
+        $pdf->setPaper('a4', 'portrait');
         return $pdf->stream('produk.pdf');
-
-        // $dataProduk = array();
-        // foreach ($request->ids as $id) {
-        //     $produk = Produk::find($id);
-        //     $dataProduk[] = $produk;
-        // }
-
-        // $no = 1;
-        // $pdf = Pdf::loadView('pages.produk.barcode', compact('dataProduk', 'no'));
-        // $pdf->setPaper('a4', 'potrait');
-        // return $pdf->stream('produk.pdf');
     }
+    // public function cetakBarcode(Request $request)
+    // {
+    //     $dataproduk = array();
+    //     foreach ($request->ids as $id) {
+    //         $produk = Produk::find($id);
+    //         $dataproduk[] = $produk;
+    //     }
+
+    //     $no  = 1;
+    //     $pdf = Pdf::loadView('pages.produk.barcode', compact('dataproduk', 'no'));
+    //     $pdf->setPaper('a4', 'potrait');
+    //     return $pdf->stream('produk.pdf');
+    // }
 }

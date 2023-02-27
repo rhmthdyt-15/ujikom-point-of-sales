@@ -32,15 +32,15 @@
                  </li>
  
                  <li class="menu-title">TRANSAKSI</li>
-                 <li class="menu-item">
-                     <a href="#">
+                 <li class="{{ request()->is('pengeluaran*') ? 'active' : '' }} menu-item">
+                     <a href="{{ route('pengeluaran.index') }}">
                          <i class="menu-icon fa fa-money">
                              </i>Pengeluaran
                      </a>
                  </li>
                 
-                 <li class="menu-item">
-                     <a href="#">
+                 <li class="{{ request()->is('pembelian*') ? 'active' : '' }} menu-item">
+                     <a href="{{ route('pembelian.index') }}">
                              <i class="menu-icon fa fa-download">
                              </i>Pembelian
                      </a>

@@ -1,22 +1,22 @@
 @extends('layouts.master')
 
 @section('title')
-Supplier
+Pengeluaran
 @endsection
 
 @section('content')
 <div class="col-md-12">
     <div class="card">
         <div class="card-header">
-            <strong>Data Supplier</strong>
+            <strong>Data Pengeluaran</strong>
         </div>
         <div class="card-body">
             <div class="d-flex align-items-center mb-3">
                 <button type="button" class="btn btn-success mr-1" data-toggle="modal" data-target="#largeModal">
                     <i class="fa fa-plus-circle"></i> Tambah</button>
-                @includeIf('pages.supplier.tambah')
+                @includeIf('pages.pengeluaran.tambah')
 
-                <form class="ml-auto" action="{{ route('supplier.index') }}" method="GET">
+                <form class="ml-auto" action="{{ route('pengeluaran.index') }}" method="GET">
                     <div class="input-group">
                         <input type="text" class="form-control" name="search" placeholder="Search...">
                         <div class="input-group-append">
@@ -42,28 +42,29 @@ Supplier
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama</th>
-                            <th>Alamat</th>
-                            <th>Telepon</th>
+                            <th>Tanggal</th>
+                            <th>Deskripsi</th>
+                            <th>Nominal</th>
                             <th><i class="fa fa-cog"></i></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($supplier as $index => $row)
+                        @forelse ($pengeluaran as $index => $row)
                         <tr>
-                            <td>{{ ($supplier->currentPage() - 1) * $supplier->perPage() + $loop->iteration }}</td>
-                            <td >{{ $row->nama }}</td>
-                            <td >{{ $row->alamat }}</td>
-                            <td >{{ $row->telepon }}</td>
+                            <td>{{ ($pengeluaran->currentPage() - 1) * $pengeluaran->perPage() + $loop->iteration }}</td>
+                            {{-- <td >{{ ($pengeluaran->currentPage() - 1) * $pengeluaran->perPage() + $key + 1 }}</td> --}}
+                            <td >{{  tanggal_indonesia($row->created_at, false) }}</td>
+                            <td >{{ $row->deskripsi }}</td>
+                            <td >{{ format_uang($row->nominal) }}</td>
                             <td>
                                 <div class="d-flex">
                                     <button type="button" class="btn btn-warning mb-1" data-toggle="modal"
-                                        data-target="#largeModal-{{ $row->id_supplier }}">
+                                        data-target="#largeModal-{{ $row->id_pengeluaran }}">
                                         <i class="fa fa-solid fa-pencil text-white"></i></button>
                                     </button>
-                                    @includeIf('pages.supplier.edit', ['supplier' => $row])
+                                    @includeIf('pages.pengeluaran.edit', ['pengeluaran' => $row])
     
-                                    <form method="POST" action="{{ route('supplier.destroy', $row->id_supplier) }}">
+                                    <form method="POST" action="{{ route('pengeluaran.destroy', $row->id_pengeluaran) }}">
                                         @method('DELETE')
                                         @csrf
                                         <button type="submit" class="btn btn-danger ms-1 show_confirm" data-toggle="tooltip" title='Delete' style="margin-left: 5px">
@@ -81,7 +82,7 @@ Supplier
                     </tbody>
                 </table>
                 <div class="pagination w-full flex justify-end">
-                    {{ $supplier->links('pagination::bootstrap-4') }}
+                    {{ $pengeluaran->links('pagination::bootstrap-4') }}
                 </div>
             </div>
         </div>

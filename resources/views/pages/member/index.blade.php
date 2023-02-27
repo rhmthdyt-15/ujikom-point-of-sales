@@ -52,7 +52,7 @@ Member
 
             <div class="table mt-3">
                <form action="#" class="form-member">
-                    <table class="table table-bordered">
+                    <table class="table table-striped table-bordered">
                         <thead>
                             <tr>
                               <th>

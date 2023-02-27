@@ -42,7 +42,7 @@ Produk
             <div class="table mt-3">
                 <form action='{{ route('produk.cetak_barcode') }}' method="post" class="form-produk">
                     @csrf
-                    <table class="table table-bordered">
+                    <table class="table table-striped table-bordered">
                         <thead>
                             <tr>
                                 <th>

@@ -124,30 +124,17 @@ class MemberController extends Controller
 
     public function cetakMember(Request $request)
     {
-        $datamember = array();
+        $datamember = collect(array());
         foreach ($request->ids as $id) {
             $member = Member::find($id);
             $datamember[] = $member;
         }
 
-        return $datamember;
+        $datamember = $datamember->chunk(2);
+
         $no  = 1;
-        $pdf = Pdf::loadView('pages.member.cetak', compact('data$datamember', 'no'));
+        $pdf = Pdf::loadView('pages.member.cetak', compact('datamember', 'no'));
         $pdf->setPaper('a4', 'potrait');
         return $pdf->stream('member.pdf');
-        // $datamember = array();
-        // if (!empty($request->id_member)) {
-        //     foreach ($request->id_member as $id) {
-        //         $member = Member::find($id);
-        //         $datamember[] = $member;
-        //     }
-        // }
-
-        // return $datamember;
-
-        // $no = 1;
-        // $pdf = Pdf::loadView('member.barcode', compact('datamember', 'no'));
-        // $pdf->setPaper('a4', 'potrait');
-        // return $pdf->stream('member.pdf');
     }
 }
