@@ -29,7 +29,7 @@ Member
                     <i class="fa fa-id-card"></i> Cetak Member
                 </button>
 
-                <form class="ml-auto" action="{{ route('member.index') }}" method="GET">
+                {{-- <form class="ml-auto" action="{{ route('member.index') }}" method="GET">
                     <div class="input-group">
                         <input type="text" class="form-control" name="search" placeholder="Search...">
                         <div class="input-group-append">
@@ -38,7 +38,7 @@ Member
                             </button>
                         </div>
                     </div>
-                </form>
+                </form> --}}
             </div>
         
             @if(Session::has('success'))
@@ -52,7 +52,7 @@ Member
 
             <div class="table mt-3">
                <form action="#" class="form-member">
-                    <table class="table table-striped table-bordered">
+                    <table id="bootstrap-data-table" class="table table-striped table-bordered">
                         <thead>
                             <tr>
                               <th>
@@ -107,9 +107,9 @@ Member
                              @endforelse
                         </tbody>
                     </table>
-                    <div class="pagination w-full flex justify-end">
+                    {{-- <div class="pagination w-full flex justify-end">
                         {{ $member->links('pagination::bootstrap-4') }}
-                    </div>
+                    </div> --}}
                </form>
             </div>
         </div>

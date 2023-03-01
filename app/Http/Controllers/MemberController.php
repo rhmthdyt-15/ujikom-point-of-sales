@@ -15,14 +15,15 @@ class MemberController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->input('search');
-        $member = Member::query();
+        $member = Member::all();
+        // $search = $request->input('search');
+        // $member = Member::query();
 
-        if (!empty($search)) {
-            $member->where('nama', 'LIKE', '%' . $search . '%');
-        }
+        // if (!empty($search)) {
+        //     $member->where('nama', 'LIKE', '%' . $search . '%');
+        // }
 
-        $member = $member->paginate(10);
+        // $member = $member->paginate(10);
 
         return view('pages.member.index', compact('member'));
     }

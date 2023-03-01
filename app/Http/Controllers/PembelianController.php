@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pembelian;
-use App\Models\Supplier;
 use Illuminate\Http\Request;
+use App\Models\Supplier;
+use App\Models\Pembelian;
 
 class PembelianController extends Controller
 {
@@ -13,7 +13,6 @@ class PembelianController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
     public function index()
     {
         $supplier = Supplier::orderBy('nama')->get();
@@ -21,32 +20,6 @@ class PembelianController extends Controller
 
         return view('pages.pembelian.index', compact('supplier', 'pembelian'));
     }
-
-    // public function index(Request $request)
-    // {
-    // $supplier = Supplier::orderBy('nama')->get();
-    // $pembelian = Pembelian::all();
-
-    // return view('pages.pembelian.index', compact('supplier', 'pembelian'));
-
-    // $supplier = Supplier::orderBy('nama')->get();
-    // $searchPembelian = $request->input('search_pembelian');
-    // $searchSupplier = $request->input('search_supplier');
-
-    // $pembelian = Pembelian::query();
-    // if (!empty($searchPembelian)) {
-    //     $pembelian->where('id_pembelian', 'LIKE', '%' . $searchPembelian . '%');
-    // }
-    // $pembelian = $pembelian->paginate(10);
-
-    // $supplierQuery = Supplier::query();
-    // if (!empty($searchSupplier)) {
-    //     $supplierQuery->where('nama_supplier', 'LIKE', '%' . $searchSupplier . '%');
-    // }
-    // $supplier = $supplierQuery->paginate(5);
-
-    // return view('pages.pembelian.index', compact('pembelian', 'supplier', 'searchPembelian', 'searchSupplier'));
-    // }
 
     /**
      * Show the form for creating a new resource.

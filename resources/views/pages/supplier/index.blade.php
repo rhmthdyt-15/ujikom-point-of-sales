@@ -16,7 +16,7 @@ Supplier
                     <i class="fa fa-plus-circle"></i> Tambah</button>
                 @includeIf('pages.supplier.tambah')
 
-                <form class="ml-auto" action="{{ route('supplier.index') }}" method="GET">
+                {{-- <form class="ml-auto" action="{{ route('supplier.index') }}" method="GET">
                     <div class="input-group">
                         <input type="text" class="form-control" name="search" placeholder="Search...">
                         <div class="input-group-append">
@@ -25,7 +25,7 @@ Supplier
                             </button>
                         </div>
                     </div>
-                </form>
+                </form> --}}
             </div>
         
             @if(Session::has('success'))
@@ -38,7 +38,7 @@ Supplier
             @endif
 
             <div class="table mt-3">
-                <table class="table table-striped table-bordered">
+                <table id="bootstrap-data-table" class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -49,9 +49,9 @@ Supplier
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($supplier as $index => $row)
+                        @forelse ($supplier as $key => $row)
                         <tr>
-                            <td>{{ ($supplier->currentPage() - 1) * $supplier->perPage() + $loop->iteration }}</td>
+                            <td>{{ $key+1 }}</td>
                             <td >{{ $row->nama }}</td>
                             <td >{{ $row->alamat }}</td>
                             <td >{{ $row->telepon }}</td>
@@ -80,9 +80,9 @@ Supplier
                         @endforelse
                     </tbody>
                 </table>
-                <div class="pagination w-full flex justify-end">
+                {{-- <div class="pagination w-full flex justify-end">
                     {{ $supplier->links('pagination::bootstrap-4') }}
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>

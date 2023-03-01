@@ -15,14 +15,16 @@ class KategoriController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->input('search');
-        $kategori = Kategori::query();
+        // $search = $request->input('search');
+        // $kategori = Kategori::query();
 
-        if (!empty($search)) {
-            $kategori->where('nama_kategori', 'LIKE', '%' . $search . '%');
-        }
+        $kategori = Kategori::all();
 
-        $kategori = $kategori->paginate(10);
+        // if (!empty($search)) {
+        //     $kategori->where('nama_kategori', 'LIKE', '%' . $search . '%');
+        // }
+
+        // $kategori = $kategori->paginate(10);
 
         return view('pages.kategori.index', compact('kategori'));
     }

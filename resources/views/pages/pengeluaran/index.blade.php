@@ -16,7 +16,7 @@ Pengeluaran
                     <i class="fa fa-plus-circle"></i> Tambah</button>
                 @includeIf('pages.pengeluaran.tambah')
 
-                <form class="ml-auto" action="{{ route('pengeluaran.index') }}" method="GET">
+                {{-- <form class="ml-auto" action="{{ route('pengeluaran.index') }}" method="GET">
                     <div class="input-group">
                         <input type="text" class="form-control" name="search" placeholder="Search...">
                         <div class="input-group-append">
@@ -25,7 +25,7 @@ Pengeluaran
                             </button>
                         </div>
                     </div>
-                </form>
+                </form> --}}
             </div>
         
             @if(Session::has('success'))
@@ -38,7 +38,7 @@ Pengeluaran
             @endif
 
             <div class="table mt-3">
-                <table class="table table-striped table-bordered">
+                <table id="bootstrap-data-table" class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -49,13 +49,13 @@ Pengeluaran
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($pengeluaran as $index => $row)
+                        @forelse ($pengeluaran as $key => $row)
                         <tr>
-                            <td>{{ ($pengeluaran->currentPage() - 1) * $pengeluaran->perPage() + $loop->iteration }}</td>
+                            <td>{{ $key+1 }}</td>
                             {{-- <td >{{ ($pengeluaran->currentPage() - 1) * $pengeluaran->perPage() + $key + 1 }}</td> --}}
                             <td >{{  tanggal_indonesia($row->created_at, false) }}</td>
                             <td >{{ $row->deskripsi }}</td>
-                            <td >{{ format_uang($row->nominal) }}</td>
+                            <td >Rp.{{ format_uang($row->nominal) }}</td>
                             <td>
                                 <div class="d-flex">
                                     <button type="button" class="btn btn-warning mb-1" data-toggle="modal"
@@ -81,9 +81,9 @@ Pengeluaran
                         @endforelse
                     </tbody>
                 </table>
-                <div class="pagination w-full flex justify-end">
+                {{-- <div class="pagination w-full flex justify-end">
                     {{ $pengeluaran->links('pagination::bootstrap-4') }}
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>

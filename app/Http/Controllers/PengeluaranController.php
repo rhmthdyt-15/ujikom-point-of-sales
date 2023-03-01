@@ -15,14 +15,15 @@ class PengeluaranController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->input('search');
-        $pengeluaran = Pengeluaran::query();
+        $pengeluaran = Pengeluaran::all();
+        // $search = $request->input('search');
+        // $pengeluaran = Pengeluaran::query();
 
-        if (!empty($search)) {
-            $pengeluaran->where('deskripsi', 'LIKE', '%' . $search . '%');
-        }
+        // if (!empty($search)) {
+        //     $pengeluaran->where('deskripsi', 'LIKE', '%' . $search . '%');
+        // }
 
-        $pengeluaran = $pengeluaran->paginate(10);
+        // $pengeluaran = $pengeluaran->paginate(10);
 
         return view('pages.pengeluaran.index', compact('pengeluaran'));
     }

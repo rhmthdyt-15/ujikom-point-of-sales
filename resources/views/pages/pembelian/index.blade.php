@@ -44,9 +44,12 @@ Daftar Pembelian
                         @forelse ($pembelian as $key => $row)
                         <tr>
                             <td>{{ $key+1 }}</td>
-                            <td >{{ $row->nama }}</td>
-                            <td >{{ $row->alamat }}</td>
-                            <td >{{ $row->telepon }}</td>
+                            <td >{{ $row->tanggal }}</td>
+                            <td >{{ $row->supplier }}</td>
+                            <td >{{ $row->total_item }}</td>
+                            <td>{{ $row->total_harga }}</td>
+                            <td>{{ $row->diskon }}</td>
+                            <td>{{ $row->bayar }}</td>
                             <td>
                                 <div class="d-flex">
                                     <button type="button" class="btn btn-warning mb-1" data-toggle="modal"

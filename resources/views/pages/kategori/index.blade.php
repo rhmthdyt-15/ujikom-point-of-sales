@@ -16,7 +16,7 @@ Kategori
                     <i class="fa fa-plus-circle"></i> Tambah</button>
                 @includeIf('pages.kategori.tambah')
 
-                <form class="ml-auto" action="{{ route('kategori.index') }}" method="GET">
+                {{-- <form class="ml-auto" action="{{ route('kategori.index') }}" method="GET">
                     <div class="input-group">
                         <input type="text" class="form-control" name="search" placeholder="Search...">
                         <div class="input-group-append">
@@ -25,7 +25,7 @@ Kategori
                             </button>
                         </div>
                     </div>
-                </form>
+                </form> --}}
             </div>
         
             @if(Session::has('success'))
@@ -38,7 +38,7 @@ Kategori
             @endif
 
             <div class="table mt-3">
-                <table class="table table-striped table-bordered">
+                <table id="bootstrap-data-table" class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -47,9 +47,9 @@ Kategori
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($kategori as $index => $row)
+                        @forelse ($kategori as $key => $row)
                         <tr>
-                            <td>{{ ($kategori->currentPage() - 1) * $kategori->perPage() + $loop->iteration }}</td>
+                            <td>{{ $key+1 }}</td>
                             {{-- <td >{{ ($kategori->currentPage() - 1) * $kategori->perPage() + $key + 1 }}</td> --}}
                             <td >{{ $row->nama_kategori }}</td>
                             <td>
@@ -77,9 +77,6 @@ Kategori
                         @endforelse
                     </tbody>
                 </table>
-                <div class="pagination w-full flex justify-end">
-                    {{ $kategori->links('pagination::bootstrap-4') }}
-                </div>
             </div>
         </div>
     </div>
@@ -109,8 +106,7 @@ Kategori
                )
            }
        });
-     });
- 
+    });
 </script>    
 @endpush
 @endsection

@@ -15,14 +15,15 @@ class SupplierController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->input('search');
-        $supplier = Supplier::query();
+        $supplier = Supplier::all();
+        // $search = $request->input('search');
+        // $supplier = Supplier::query();
 
-        if (!empty($search)) {
-            $supplier->where('nama_supplier', 'LIKE', '%' . $search . '%');
-        }
+        // if (!empty($search)) {
+        //     $supplier->where('nama_supplier', 'LIKE', '%' . $search . '%');
+        // }
 
-        $supplier = $supplier->paginate(10);
+        // $supplier = $supplier->paginate(10);
 
         return view('pages.supplier.index', compact('supplier'));
     }
