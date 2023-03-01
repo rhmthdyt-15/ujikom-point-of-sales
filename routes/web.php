@@ -52,5 +52,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/pengeluaran', PengeluaranController::class);
 
     //pembeian
-    Route::resource('/pembelian', PembelianController::class);
+    Route::get('/pembelian/{id}/create', [PembelianController::class, 'create'])->name('pembelian.create');
+    Route::resource('/pembelian', PembelianController::class)
+        ->except('create');
+
+    Route::resource('/pembelian_detail', PembelianDetailController::class)
+        ->except('create', 'show', 'edit');
 });
