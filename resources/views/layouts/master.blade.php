@@ -29,6 +29,8 @@
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@3.9.0/dist/fullcalendar.min.css" rel="stylesheet" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('templates/assets/css/lib/datatable/dataTables.bootstrap.min.css') }}">
+    
+    @stack('css')
 
     @include('layouts.style')
 </head>
@@ -91,6 +93,7 @@
     <script src="{{ asset('templates/assets/js/lib/data-table/buttons.print.min.js') }}"></script>
     <script src="{{ asset('templates/assets/js/lib/data-table/buttons.colVis.min.js') }}"></script>
     <script src="{{ asset('templates/assets/js/init/datatables-init.js') }}"></script>
+
     <script type="text/javascript">
         $(document).ready(function() {
           $('#bootstrap-data-table-export').DataTable();

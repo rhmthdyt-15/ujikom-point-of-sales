@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Member;
+use App\Models\Setting;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Milon\Barcode\DNS1D;
+use Milon\Barcode\DNS2D;
 
 class MemberController extends Controller
 {
@@ -132,10 +135,11 @@ class MemberController extends Controller
         }
 
         $datamember = $datamember->chunk(2);
+        $setting    = Setting::first();
 
         $no  = 1;
-        $pdf = Pdf::loadView('pages.member.cetak', compact('datamember', 'no'));
-        $pdf->setPaper('a4', 'potrait');
+        $pdf = PDF::loadView('pages.member.cetak', compact('datamember', 'no', 'setting'));
+        $pdf->setPaper(array(0, 0, 566.93, 850.39), 'potrait');
         return $pdf->stream('member.pdf');
     }
 }

@@ -56,6 +56,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/pembelian', PembelianController::class)
         ->except('create');
 
+    Route::get('/pembelian_detail/loadform/{diskon}/{total}', [PembelianDetailController::class, 'loadForm'])->name('pembelian_detail.load_form');
+    Route::post('/pembelian_detail', [PembelianDetailController::class, 'store'])->name(' pembelian_detail.store');
     Route::resource('/pembelian_detail', PembelianDetailController::class)
         ->except('create', 'show', 'edit');
 });
