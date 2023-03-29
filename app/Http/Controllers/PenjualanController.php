@@ -18,7 +18,7 @@ class PenjualanController extends Controller
      */
     public function index(): \Illuminate\View\View
     {
-        $penjualan = Penjualan::with('member')->orderBy('id_penjualan', 'desc')->get();
+        $penjualan = Penjualan::with('member')->orderBy('id_penjualan', 'desc')->get(); 
 
         return view('pages.penjualan.index', [
             'penjualan' => $penjualan
