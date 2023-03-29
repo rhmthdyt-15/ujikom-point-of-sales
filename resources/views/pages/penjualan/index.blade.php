@@ -4,6 +4,20 @@
 Daftar Penjualan
 @endsection
 
+@push('css')
+<style>
+    .d-flex {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .btn {
+        margin-right: 10px;
+    }
+</style>
+@endpush
+
 @section('content')
 <div class="col-md-12">
     <div class="card">
@@ -26,7 +40,7 @@ Daftar Penjualan
                         <thead>
                             <tr>
                                 <th width="5%">No</th>
-                                <th>Tanggal</th>
+                                <th width="15%">Tanggal</th>
                                 <th>Kode Member</th>
                                 <th>Total Item</th>
                                 <th>Total Harga</th>
@@ -40,15 +54,32 @@ Daftar Penjualan
                           @forelse ($penjualan as $key => $row)
                             <tr>
                               <td>{{ $key+1 }}</td>
-                              <td>{{ $row->created_at }}</td>
-                              <td>{{ $row->member->kode_member }}</td>
-                              <td>{{ $row->total_item }}</td>
-                              <td>{{ $row->total_harga }}</td>
-                              <td>{{ $row->diskon }}</td>
-                              <td>{{ $row->bayar }}</td>
-                              <td>{{ $row->user->name}}</td>
+                              <td width="15%">{{  tanggal_indonesia($row->created_at, false) }}</td>
                               <td>
-                                Aksi
+                                <span class="btn btn-sm btn-success">
+                                    {{ $row->member ? $row->member->kode_member : '' }}
+                                </span>
+                            </td>
+                              <td>{{ $row->total_item }}</td>
+                              <td>Rp.{{ format_uang($row->total_harga) }}</td>
+                              <td>{{ $row->diskon }}</td>
+                              <td>Rp.{{ format_uang($row->bayar)  }}</td>
+                              <td>{{ $row->user->name}}</td>
+                              <td wiidth="15%">
+                                <div class="d-flex">
+                                    <button type="button" class="btn btn-outline-primary mb-1" data-toggle="modal" data-target="#modal-detail">
+                                        <i class="fa fa-eye"></i>
+                                    </button>
+                                    @includeIf('pages.penjualan.detail', ['penjualan' => $row])
+                                
+                                    <form method="POST" action="{{ route('penjualan.destroy', $row->id_penjualan) }}">
+                                        @method('DELETE')
+                                        @csrf
+                                        <button type="submit" class="btn btn-outline-danger ms-1 show_confirm" data-toggle="tooltip" title='Delete'>
+                                            <i class="fa fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>                                
                               </td>
                             </tr>
                           @empty                 

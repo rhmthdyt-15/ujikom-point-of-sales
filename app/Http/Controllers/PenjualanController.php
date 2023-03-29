@@ -18,7 +18,7 @@ class PenjualanController extends Controller
      */
     public function index(): \Illuminate\View\View
     {
-        $penjualan = Penjualan::with('member')->orderBy('id_penjualan', 'desc');
+        $penjualan = Penjualan::with('member')->orderBy('id_penjualan', 'desc')->get();
 
         return view('pages.penjualan.index', [
             'penjualan' => $penjualan
@@ -116,7 +116,21 @@ class PenjualanController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $penjualan = Penjualan::find($id);
+        $detail    = PenjualanDetail::where('id_penjualan', $penjualan->id_penjualan)->get();
+        foreach ($detail as $item) {
+            $produk = Produk::find($item->id_produk);
+            if ($produk) {
+                $produk->stok += $item->jumlah;
+                $produk->update();
+            }
+
+            $item->delete();
+        }
+
+        $penjualan->delete();
+
+        return response(null, 204);
     }
 
     public function selesai()

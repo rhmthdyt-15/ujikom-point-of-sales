@@ -48,8 +48,8 @@
                  
 
                 <li class="menu-title">Penjualan</li>
-                <li class="menu-item">
-                    <a href="#">
+                <li class="menu-item {{ request()->is('penjualan*') ? 'active' : '' }}">
+                    <a href="{{ route('penjualan.index') }}">
                         <i class="menu-icon fa fa-upload"></i>
                         Penjualan
                     </a>

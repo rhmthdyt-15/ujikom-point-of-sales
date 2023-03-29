@@ -40,7 +40,7 @@ Daftar Pembelian
                             <th>Total Harga</th>
                             <th>Diskon</th>
                             <th>Total Bayar</th>
-                            <th><i class="fa fa-cog"></i></th>
+                            <th width="15%"><i class="fa fa-cog"></i></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -53,7 +53,7 @@ Daftar Pembelian
                             <td>Rp. {{ format_uang($row->total_harga) }}</td>
                             <td>{{ $row->diskon }}%</td>
                             <td>Rp. {{ format_uang($row->bayar)}}</td>
-                            <td>
+                            <td width="15%">
                                 <div class="d-flex">
                                     <button type="button" class="btn btn-primary mb-1" data-toggle="modal"
                                         data-target="#largeModal-{{ $row->id_pembelian }}">
