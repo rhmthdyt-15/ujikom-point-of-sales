@@ -15,12 +15,17 @@ class PembelianController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index() : \Illuminate\View\View
     {
+        $id_pembelian = session('id_pembelian');
         $supplier = Supplier::orderBy('nama')->get();
         $pembelian = Pembelian::all();
+        $detail = PembelianDetail::with('produk')
+            ->where('id_pembelian', $id_pembelian)
+            ->get();
 
-        return view('pages.pembelian.index', compact('supplier', 'pembelian'));
+
+        return view('pages.pembelian.index', compact('supplier', 'pembelian', 'detail'));
     }
 
     /**
@@ -55,8 +60,8 @@ class PembelianController extends Controller
         $pembelian = Pembelian::findOrFail($request->id_pembelian);
         $pembelian->total_item = $request->total_item;
         $pembelian->total_harga = $request->total;
-        $pembelian->diskon = $request->diskon;
-        $pembelian->bayar = $request->bayar;
+        $pembelian->diskon = $request->diskon ?? 0;
+        $pembelian->bayar = $request->bayar ?? $request->total;
         $pembelian->update();
 
         $detail = PembelianDetail::where('id_pembelian', $pembelian->id_pembelian)->get();
@@ -67,6 +72,8 @@ class PembelianController extends Controller
         }
 
         return redirect()->route('pembelian.index');
+        // dd($request->all());
+
     }
 
     /**
@@ -111,6 +118,19 @@ class PembelianController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $pembelian = Pembelian::find($id);
+        $detail    = PembelianDetail::where('id_pembelian', $pembelian->id_pembelian)->get();
+        foreach ($detail as $item) {
+            $produk = Produk::find($item->id_produk);
+            if ($produk) {
+                $produk->stok -= $item->jumlah;
+                $produk->update();
+            }
+            $item->delete();
+        }
+
+        $pembelian->delete();
+
+        return redirect()->route('pembelian.index')->with(['success' => 'Berhasil Dihapus!']);
     }
 }

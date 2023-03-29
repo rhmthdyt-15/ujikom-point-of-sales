@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             ProdukSeeder::class,
             SupplierSeeder::class,
             MemberSeeder::class,
+            SettingTableSeeder::class,
         ]);
         // \App\Models\User::factory(10)->create();
 

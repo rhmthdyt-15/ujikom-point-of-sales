@@ -16,7 +16,7 @@ class KategoriSeeder extends Seeder
     public function run()
     {
         Kategori::factory()
-            ->count(20)
+            ->count(5)
             ->create();
     }
 }

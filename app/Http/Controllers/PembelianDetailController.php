@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pembelian;
 use App\Models\PembelianDetail;
 use App\Models\Produk;
 use App\Models\Supplier;
@@ -14,7 +15,7 @@ class PembelianDetailController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(): \Illuminate\View\View
+    public function index() : \Illuminate\View\View
     {
         $id_pembelian = session('id_pembelian');
         $supplier = Supplier::find(session('id_supplier'));
@@ -35,6 +36,8 @@ class PembelianDetailController extends Controller
             $total_item += $item->jumlah;
         }
 
+        $diskon = Pembelian::find('id_pembelian')->diskon ?? 0;
+
         $produk = Produk::join('kategori', 'produk.id_kategori', '=', 'kategori.id_kategori')
                 ->select('produk.*', 'kategori.nama_kategori')
                 ->orderBy('nama_produk')
@@ -46,7 +49,8 @@ class PembelianDetailController extends Controller
             'supplier' => $supplier, 
             'pembelianDetail' => $detail,
             'total' => $total,
-            'total_item' => $total_item
+            'total_item' => $total_item,
+            'diskon' => $diskon,
         ]);
     }
 
@@ -66,7 +70,7 @@ class PembelianDetailController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request) 
     {
         $produk = Produk::where('id_produk', $request->id_produk)->first();
         if (!$produk) {

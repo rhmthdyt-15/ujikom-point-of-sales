@@ -28,7 +28,7 @@
                                     </span> 
                                 </td>
                                 <td>{{ $item->nama_produk }}</td>
-                                <td>Rp.{{ format_uang($item->harga_beli)}}</td>
+                                <td>Rp.{{ format_uang($item->harga_beli) }}</td>
                                 <td>
                                      <a href="#" class="btn btn-outline-primary btn-xs btn-flat"
                                         onclick="pilihProduk('{{ $item->id_produk }}','{{ $item->kode_produk }}')">

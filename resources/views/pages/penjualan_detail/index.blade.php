@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-Transaksi Pembelian
+Transaksi Penjualan
 @endsection
 
 @push('css')
@@ -46,24 +46,9 @@ Transaksi Pembelian
 <div class="col-md-12">
     <div class="card">
         <div class="card-header">
-            <strong>Transaksi Pembelian</strong>
+            <strong>Transaksi Penjualan</strong>
         </div>
         <div class="card-body">
-            <table>
-                <tr>
-                    <td>Supplier</td>
-                    <td>: {{ $supplier->nama }}</td>
-                </tr>
-                <tr>
-                    <td>Telepon</td>
-                    <td>: {{ $supplier->telepon }}</td>
-                </tr>
-                <tr>
-                    <td>Alamat</td>
-                    <td>: {{ $supplier->alamat }}</td>
-                </tr>
-            </table>
-
             <div class="table mt-3">
                 <form class="form-produk" action="{{ route('pembelian_detail.store') }}" method="POST">
                     @csrf
@@ -71,7 +56,7 @@ Transaksi Pembelian
                         <label for="kode_produk" class="col-lg-2">Kode Produk</label>
                         <div class="col-lg-5">
                             <div class="input-group">
-                                <input type="hidden" name="id_pembelian" id="id_pembelian" value="{{ $id_pembelian }}">
+                                <input type="hidden" name="id_penjualan" id="id_penjualan" value="{{ $id_penjualan }}">
                                 <input type="hidden" name="id_produk" id="id_produk">
                                 <input type="text" class="form-control" name="kode_produk" id="kode_produk">
                                 <span class="input-group-btn">
@@ -84,23 +69,24 @@ Transaksi Pembelian
                         </div>
                     </div>
                 </form>
-                @includeIf('pages.pembelian_detail.produk')
+                @includeIf('pages.penjualan_detail.produk')
 
 
-                <table id="bootstrap-data-table" class="table table-striped table-bordered table-product">
+                <table id="bootstrap-data-table" class="table table-striped table-bordered table-penjualan">
                     <thead>
                         <tr>
                             <th width="5%">No</th>
                             <th>Kode</th>
                             <th>Nama</th>
                             <th>Harga</th>
+                            <th>Diskon</th>
                             <th width="15%">Jumlah</th>
                             <th>Subtotal</th>
                             <th width="15%"><i class="fa fa-cog"></i></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($pembelianDetail as $key => $row)
+                        @forelse ($detail as $key => $row)
                         <tr>
                             <td>{{ $key+1 }}</td>
                             <td>
@@ -109,16 +95,17 @@ Transaksi Pembelian
                                 </span>
                             </td>
                             <td>{{ $row->produk->nama_produk }}</td>
-                            <td>Rp. {{ format_uang($row->harga_beli) }}</td>
+                            <td>Rp. {{ format_uang($row->harga_jual) }}</td>
+                            <td>{{ $row->diskon }}%</td>
                             <td>
                                 <input type="number" class="form-control input-sm quantity"
-                                    data-id="{{ $row->id_pembelian_detail }}" data-price="{{ $row->harga_beli }}" value="{{ $row->jumlah }}">
+                                data-id="{{ $row->id_penjualan_detail }}" data-price="{{ $row->harga_jual }}" value="{{ $row->jumlah }}">
                             </td>
-                            <td data-sub-total="{{ $row->subtotal }}">Rp. {{ format_uang($row->subtotal) }}</td>
+                            <td class="sub-total">Rp. {{ format_uang($row->subtotal) }}</td>
                             <td>
                                 <div class="d-flex">
                                     <form method="POST"
-                                        action="{{ route('pembelian_detail.destroy', $row->id_pembelian_detail) }}">
+                                        action="{{ route('transaksi.destroy', $row->id_penjualan_detail) }}">
                                         @method('DELETE')
                                         @csrf
                                         <button type="submit" class="btn btn-danger ms-1 show_confirm"
@@ -143,32 +130,61 @@ Transaksi Pembelian
                         <div class="tampil-terbilang"></div>
                     </div>
                     <div class="col-lg-4">
-                        <form action="{{ route('pembelian.store') }}" class="form-pembelian" method="post">
+                        <form action="{{ route('transaksi.simpan') }}" class="form-penjualan" method="post">
                             @csrf
-                            <input type="hidden" name="id_pembelian" value="{{ $id_pembelian }}">
-                            <input type="hidden" name="total" id="total" value="{{ $pembelianDetail->sum('subtotal') }}">
+                            <input type="hidden" name="id_penjualan" value="{{ $id_penjualan }}">
+                            <input type="hidden" name="total" id="total" value="{{ $detail->sum('subtotal') }}">
                             <input type="hidden" name="total_item" id="total_item">
                             <input type="hidden" name="bayar" id="bayar">
+                            <input type="hidden" name="id_member" id="id_member" value="{{ $memberSelected->id_member }}">
 
                             <div class="form-group row">
-                                <label for="totalrp" class="col-lg-3 control-label">Total</label>
+                                <label for="totalrp" class="col-lg-4 control-label">Total</label>
                                 <div class="col-lg-8 sub-total-summary">
-                                    <input type="text" id="totalrp" class="form-control"  value="Rp. {{ format_uang($pembelianDetail->sum('subtotal')) }}" readonly>
-                                    {{-- Rp. {{ format_uang($pembelianDetail->sum('subtotal')) }} --}}
+                                    <input type="text" id="totalrp" class="form-control"  value="Rp. {{ format_uang($detail->sum('subtotal')) }}" readonly>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="diskon" class="col-lg-3 control-label"  style="font-size: 15px;">Diskon</label>
+                                <label for="kode_member" class="col-lg-4 control-label"  style="font-size: 15px;">Member</label>
                                 <div class="col-lg-8">
-                                    <input type="number" name="diskon" id="diskon" class="form-control" value="{{ $diskon }}">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="kode_member">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-info btn-flat" type="button" data-toggle="modal"
+                                                data-target="#modal-member">
+                                                <i class="fa fa-arrow-right"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                                @includeIf('pages.penjualan_detail.member')
+                            </div>
+                            <div class="form-group row">
+                                <label for="diskon" class="col-lg-4 control-label"  style="font-size: 15px;">Diskon</label>
+                                <div class="col-lg-8">
+                                    <input type="number" name="diskon" id="diskon" class="form-control" 
+                                    value="{{ ! empty($memberSelected->id_member) ? $diskon : 0 }}" 
+                                    readonly>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="bayar" class="col-lg-3 control-label">Bayar</label>
+                                <label for="bayar" class="col-lg-4 control-label">Bayar</label>
                                 <div class="col-lg-8">
-                                    <input type="text" id="bayarrp" class="form-control">
+                                    <input type="text" id="bayarrp" class="form-control" readonly>
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                <label for="diterima" class="col-lg-4 control-label">Diterima</label>
+                                <div class="col-lg-8">
+                                    <input type="text" id="diterima" class="form-control" name="diterima" value="{{ $penjualan->diterima ?? 0 }}">
+                                </div>
+                            </div>         
+                            <div class="form-group row">
+                                <label for="kembali" class="col-lg-4 control-label">Kembali</label>
+                                <div class="col-lg-8">
+                                    <input type="text" id="kembali" class="form-control" value="0" readonly>
+                                </div>
+                            </div>         
                         </form>
                     </div>
                 </div>
@@ -195,6 +211,7 @@ Transaksi Pembelian
     //untuk menambah jumlah
     $(document).on('input', '.quantity', function () {
         let id = $(this).data('id');
+        console.log('$(this).val()', $(this).val())
         let jumlah = parseInt($(this).val());
 
         let parent = $(this).parent();
@@ -211,14 +228,19 @@ Transaksi Pembelian
             return;
         }
 
-        $.post(`{{ url('/pembelian_detail') }}/${id}`, {
+        if (isNaN(jumlah)) {
+            return;
+        }
+
+        $.post(`{{ url('/transaksi') }}/${id}`, {
                 '_token': $('[name=csrf-token]').attr('content'),
                 '_method': 'put',
                 'jumlah': jumlah
             })
             .done(response => {
                 $(this).on('mouseout', function () {
-                    table.ajax.reload(() => loadForm($('#diskon').val()));
+                    loadForm($('#diskon').val());
+                    table.ajax.reload();
                 });
 
                 
@@ -239,22 +261,24 @@ Transaksi Pembelian
 
     function hitungTotal() {
         var total = 0;
-        $('.table-product').children('tbody').children('tr').each(function() {
+        $('.table-penjualan').children('tbody').children('tr').each(function() {
             var tr = $(this);
-            var subTotal = parseInt(tr.children('td').eq(5).attr('data-sub-total'));
-            total += subTotal;
+            var subTotal = parseInt(tr.children('td').eq(6).attr('data-sub-total'));
+            total += isNaN(subTotal) ? 0 : subTotal;
         });
 
         $('.sub-total-summary').html('Rp. ' + total.toLocaleString('id-ID'));
+
+        console.log('total', total)
 
         return total;
     }
 
     function hitungTotalItem() {
         var total = 0;
-        $('.table-product').children('tbody').children('tr').each(function() {
+        $('.table-penjualan').children('tbody').children('tr').each(function() {
             var tr = $(this);
-            var subTotal = parseInt(tr.children('td').eq(4).children('.quantity').val());
+            var subTotal = parseInt(tr.children('td').eq(5).children('.quantity').val());
             total += subTotal;
         });
 
@@ -268,13 +292,18 @@ Transaksi Pembelian
         loadForm($(this).val());
     });
 
-    // $('.btn-simpan').on('click', function () {
-    //     $('.form-pembelian').submit();
-    // });
+    $('#diterima').on('input', function () {
+        if ($(this).val() == "") {
+            $(this).val(0).select();
+        }
+        loadForm($('#diskon').val(), $(this).val());
+    }).focus(function () {
+            $(this).select();
+    });
 
     $('.btn-simpan').on('click', function () {
-        $('.form-pembelian #total_item').val(hitungTotalItem());
-        $('.form-pembelian').submit();
+        $('.form-penjualan #total_item').val(hitungTotalItem());
+        $('.form-penjualan').submit();
     });
 
 
@@ -293,7 +322,7 @@ Transaksi Pembelian
     function tambahProduk() {
         $.ajax({
             type: 'POST',
-            url: '{{ route('pembelian_detail.store') }}',
+            url: '{{ route('transaksi.store') }}',
             data: $('.form-produk').serialize(),
             success: function (response) {
                 $('#kode_produk').focus();
@@ -306,16 +335,36 @@ Transaksi Pembelian
         });
     }
 
-    function loadForm(diskon = 0) {
+    function pilihMember(id, kode) {
+        console.log('masuk')
+        $('#id_member').val(id);
+        $('#kode_member').val(kode);
+        $('#diskon').val({{ $diskon }});
+        loadForm($('#diskon').val());
+        $('#diterima').val(0).focus.select();
+        hideMember();
+    }
+
+    function hideMember() {
+        $('#modal-member').modal('hide');
+    }
+
+    function loadForm(diskon = 0, diterima = 0) {
         // $('#total').val($('.total').text());
         $('#total_item').val($('.total_item').text());
-        $.get(`{{ url('/pembelian_detail/loadform') }}/${diskon}/${hitungTotal()}`)
+        $.get(`{{ url('/transaksi/loadform') }}/${diskon}/${hitungTotal()}/${diterima}`)
             .done(response => {
                 $('#totalrp').val('Rp. '+ response.totalrp);
                 $('#bayarrp').val('Rp. '+ response.bayarrp);
                 $('#bayar').val(response.bayar);
-                $('.tampil-bayar').text('Rp. '+ response.bayarrp);
+                $('.tampil-bayar').text('Bayar: Rp. '+ response.bayarrp);
                 $('.tampil-terbilang').text(response.terbilang);
+
+                $('#kembali').val('Rp.'+ response.kembalirp);
+                if ($('#diterima').val() != 0 ) {
+                    $('.tampil-bayar').text('Kembali: Rp. '+ response.kembalirp);
+                    $('.tampil-terbilang').text(response.kembali_terbilang);
+                }
             })
             .fail(errors => {
                 alert('Tidak dapat menampilkan data');

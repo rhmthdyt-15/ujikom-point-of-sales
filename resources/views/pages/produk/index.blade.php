@@ -75,8 +75,8 @@ Produk
                                 <td >{{ $row->nama_produk }}</td>
                                 <td >{{ $row->nama_kategori }}</td>
                                 <td >{{ $row->merk }}</td>
-                                <td >{{ $row->harga_jual }}</td>
-                                <td >{{ $row->harga_beli }}</td>
+                                <td >Rp.{{ format_uang($row->harga_beli)}}</td>
+                                <td >Rp.{{ format_uang($row->harga_jual)}}</td>
                                 <td >{{ $row->diskon }}</td>
                                 <td >{{ $row->stok }}</td>
                                 <td>

@@ -22,7 +22,7 @@ class ProdukController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index() : \Illuminate\View\View
     {
         $kategori = Kategori::all()->pluck('nama_kategori', 'id_kategori');
         $produk = Produk::all();

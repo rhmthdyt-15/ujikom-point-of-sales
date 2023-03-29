@@ -15,6 +15,9 @@ Daftar Pembelian
                 <button type="button" class="btn btn-success mr-1" data-toggle="modal" data-target="#largeModal">
                     <i class="fa fa-plus-circle"></i> Transaksi Baru</button>
                 @includeIf('pages.pembelian.supplier')
+                @empty(! session('id_pembelian'))
+                <a href="{{ route('pembelian_detail.index') }}" class="btn btn-info btn-xs btn-flat"><i class="fa fa-pencil"></i> Transaksi Aktif</a>
+                @endempty
             </div>
         
             @if(Session::has('success'))
@@ -44,19 +47,19 @@ Daftar Pembelian
                         @forelse ($pembelian as $key => $row)
                         <tr>
                             <td>{{ $key+1 }}</td>
-                            <td >{{ $row->tanggal }}</td>
-                            <td >{{ $row->supplier }}</td>
+                            <td >{{  tanggal_indonesia($row->created_at, false) }}</td>
+                            <td >{{ $row->supplier->nama }}</td>
                             <td >{{ $row->total_item }}</td>
-                            <td>{{ $row->total_harga }}</td>
-                            <td>{{ $row->diskon }}</td>
-                            <td>{{ $row->bayar }}</td>
+                            <td>Rp. {{ format_uang($row->total_harga) }}</td>
+                            <td>{{ $row->diskon }}%</td>
+                            <td>Rp. {{ format_uang($row->bayar)}}</td>
                             <td>
                                 <div class="d-flex">
-                                    <button type="button" class="btn btn-warning mb-1" data-toggle="modal"
+                                    <button type="button" class="btn btn-primary mb-1" data-toggle="modal"
                                         data-target="#largeModal-{{ $row->id_pembelian }}">
-                                        <i class="fa fa-solid fa-pencil text-white"></i></button>
+                                        <i class="fa fa-eye text-white"></i></button>
                                     </button>
-                                    @includeIf('pages.pembelian.edit', ['pembelian' => $row])
+                                    @includeIf('pages.pembelian.detail', ['pembelian' => $row])
     
                                     <form method="POST" action="{{ route('pembelian.destroy', $row->id_pembelian) }}">
                                         @method('DELETE')
@@ -64,7 +67,7 @@ Daftar Pembelian
                                         <button type="submit" class="btn btn-danger ms-1 show_confirm" data-toggle="tooltip" title='Delete' style="margin-left: 5px">
                                             <i class="fa fa-solid fa-trash text-white"></i>
                                         </button>
-                                    </form>
+                                    </form>     
                                 </div>
                             </td>
                         </tr>

@@ -46,32 +46,27 @@
                      </a>
                  </li>
                  
-                 <li class="menu-item">
-                     <a href="#">
-                         <i class="menu-icon fa fa-upload">
-                             </i>Penjualan
-                     </a>
-                 </li>
-                 <li class="menu-item">
-                     <a href="#">
-                         <i class="menu-icon fa fa-cart-arrow-down">
-                             </i>Transaksi Aktif
-                     </a>
-                 </li>
-                 <li class="menu-item">
-                     <a href="#">
-                         <i class="menu-icon fa fa-cart-arrow-down">
-                             </i>Transaksi Baru
-                     </a>
-                 </li>
- 
-                 <li class="menu-title">REPORT</li>
-                 <li class="menu-item">
-                     <a href="#">
-                         <i class="menu-icon fa fa-file-pdf-o">
-                             </i>Laporan 
-                     </a>
-                 </li>
+
+                <li class="menu-title">Penjualan</li>
+                <li class="menu-item">
+                    <a href="#">
+                        <i class="menu-icon fa fa-upload"></i>
+                        Penjualan
+                    </a>
+                </li>
+                <li class="menu-item {{ request()->is('transaksi lama*') ? 'active' : '' }}">
+                    <a href="{{ route('transaksi.index') }}">
+                        <i class="menu-icon fa fa-cart-arrow-down"></i>
+                        Transaksi Lama
+                    </a>
+                </li>
+                <li class="menu-item {{ request()->is('transaksibaru*') ? 'active' : '' }}">
+                    <a href="{{ route('transaksi.baru') }}">
+                        <i class="menu-icon fa fa-cart-arrow-down"></i>
+                        Transaksi Baru
+                    </a>
+                </li>
+                
  
                  <li class="menu-title">SYSTEM</li>
                  <li class="menu-item">
@@ -86,19 +81,6 @@
                              </i>Pengaturan
                      </a>
                  </li>
-                 <li class="menu-item">
-                     <a href="#">
-                         <i class="menu-icon fa fa-cart-arrow-down">
-                             </i>Transaksi Aktif
-                     </a>
-                 </li>
-                 <li class="menu-item">
-                     <a href="#">
-                         <i class="menu-icon fa fa-cart-arrow-down">
-                             </i>Transaksi Baru
-                     </a>
-                 </li>
-                
              </ul>
          </div><!-- /.navbar-collapse -->
      </nav>
