@@ -57,7 +57,7 @@
                 <li class="menu-item {{ request()->is('transaksi lama*') ? 'active' : '' }}">
                     <a href="{{ route('transaksi.index') }}">
                         <i class="menu-icon fa fa-cart-arrow-down"></i>
-                        Transaksi Lama
+                        Transaksi Katif
                     </a>
                 </li>
                 <li class="menu-item {{ request()->is('transaksibaru*') ? 'active' : '' }}">
@@ -67,20 +67,27 @@
                     </a>
                 </li>
                 
- 
-                 <li class="menu-title">SYSTEM</li>
-                 <li class="menu-item">
-                     <a href="#">
-                         <i class="menu-icon fa fa-users">
-                             </i>User
-                     </a>
-                 </li>
-                 <li class="menu-item">
-                     <a href="#">
-                         <i class="menu-icon fa fa-cogs">
-                             </i>Pengaturan
-                     </a>
-                 </li>
+                <li class="menu-title">REPORT</li>
+                <li class="menu-item {{ request()->is('laporan*') ? 'active' : ''}}">
+                    <a href="{{ route('laporan.index') }}">
+                        <i class="menu-icon fa fa-file-pdf-o">
+                            </i>Laporan
+                    </a>
+                </li>
+
+                <li class="menu-title">SYSTEM</li>
+                <li class="menu-item">
+                    <a href="#">
+                        <i class="menu-icon fa fa-users">
+                            </i>User
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#">
+                        <i class="menu-icon fa fa-cogs">
+                         </i>Pengaturan
+                    </a>
+                </li>
              </ul>
          </div><!-- /.navbar-collapse -->
      </nav>

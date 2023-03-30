@@ -56,10 +56,10 @@ Daftar Pembelian
                             <td width="15%">
                                 <div class="d-flex">
                                     <button type="button" class="btn btn-primary mb-1" data-toggle="modal"
-                                        data-target="#largeModal-{{ $row->id_pembelian }}">
+                                        data-target="#modal-detail-{{ $row->id_pembelian }}">
                                         <i class="fa fa-eye text-white"></i></button>
                                     </button>
-                                    @includeIf('pages.pembelian.detail', ['pembelian' => $row])
+                                    @includeIf('pages.pembelian.detail')
     
                                     <form method="POST" action="{{ route('pembelian.destroy', $row->id_pembelian) }}">
                                         @method('DELETE')
@@ -108,7 +108,8 @@ Daftar Pembelian
            }
        });
     });
- 
+    
+    
     
     $(document).ready(function() {
       $('#bootstrap-data-table-export').DataTable();

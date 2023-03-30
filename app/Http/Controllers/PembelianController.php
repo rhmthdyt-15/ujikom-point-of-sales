@@ -84,7 +84,9 @@ class PembelianController extends Controller
      */
     public function show($id)
     {
-        //
+        $detail = PembelianDetail::with('produk')->where('id_pembelian', $id)->get();
+
+        return view('pages.pembelian.detail', compact('detail'));
     }
 
     /**

@@ -7,6 +7,7 @@ use App\Models\PenjualanDetail;
 use App\Models\Produk;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use PhpParser\Node\Stmt\Return_;
 
 class PenjualanController extends Controller
@@ -16,12 +17,15 @@ class PenjualanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(): \Illuminate\View\View
+    public function index(Request $request): \Illuminate\View\View
     {
-        $penjualan = Penjualan::with('member')->orderBy('id_penjualan', 'desc')->get(); 
+        $penjualan = Penjualan::with('member')->orderBy('id_penjualan', 'desc')->get();
+        $id_penjualan = $request->query('id_penjualan');
+        $detail = PenjualanDetail::with('produk')->where('id_penjualan', $id_penjualan )->get();
 
         return view('pages.penjualan.index', [
-            'penjualan' => $penjualan
+            'penjualan' => $penjualan,
+            'detail' => $detail
         ]);
     }
 
@@ -71,7 +75,7 @@ class PenjualanController extends Controller
             $produk->update(); 
         }
 
-        return redirect()->route('penjualan.index');
+        return redirect()->route('transaksi.selesai');
     }
 
     /**
@@ -139,4 +143,34 @@ class PenjualanController extends Controller
 
         return view('pages.penjualan.selesai', compact('setting'));
     }
+
+    public function notaKecil()
+    {
+       $setting = Setting::first();
+       $penjualan = Penjualan::find(session('id_penjualan'));
+       if (! $penjualan) {
+        abort(404);
+       }
+       $detail = PenjualanDetail::with('produk')
+            ->where('id_penjualan', session('id_penjualan'))
+            ->get();
+        
+        return view('pages.penjualan.nota_kecil', compact('setting', 'penjualan', 'detail'));
+    }
+
+    // public function notaBesar()
+    // {
+    //     $setting = Setting::first();
+    //     $penjualan = Penjualan::find(session('id_penjualan'));
+    //     if (! $penjualan) {
+    //         abort(404);
+    //     }
+    //     $detail = PenjualanDetail::with('produk')
+    //         ->where('id_penjualan', session('id_penjualan'))
+    //         ->get();
+
+    //     $pdf = PDF::loadView('pages.penjualan.nota_besar', compact('setting', 'penjualan', 'detail'));
+    //     $pdf->setPaper(0,0,609,440, 'potrait');
+    //     return $pdf->stream('Transaksi-'. date('Y-m-d-his') .'.pdf');
+    // }
 }
