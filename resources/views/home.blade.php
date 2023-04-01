@@ -1,5 +1,1 @@
-@extends('layouts.master')
-
-@section('title')
-     Dashboard
-@endsection
+@include('pages.admin.dashboard')

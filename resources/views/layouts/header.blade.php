@@ -10,11 +10,13 @@
          <div class="header-menu">
              <div class="user-area dropdown float-right">
                  <a href="#" class="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                     <img class="user-avatar rounded-circle" src="{{ asset('templates/images/admin.jpg') }}" alt="User Avatar">
+                     <img class="user-avatar rounded-circle" src="{{ url(auth()->user()->foto ?? '') }}" alt="User Avatar">
                  </a>
 
                  <div class="user-menu dropdown-menu">
-                     <a class="nav-link" href="#"><i class="fa fa-user"></i>My Profile</a>
+                     <a class="nav-link" href="{{ route('user.profil') }}"><i class="fa fa-user"></i>My Profile</a>
+
+                     <a class="nav-link" href="{{ route('user.edit') }}"><i class="fa fa-cog"></i>Settings</a>
 
                      <a class="nav-link" href="#" onclick="document.getElementById('logout-form').submit()">
                          <i class="fa fa-power-off"></i>Logout</a>

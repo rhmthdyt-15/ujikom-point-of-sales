@@ -36,19 +36,18 @@ Laporan Pendapatan
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($data as $key => $row)
+                        @php $total_pendapatan = 0; @endphp
+                        @foreach($data as $key => $row)
                         <tr>
-                          <td>{{ $key+1 }}</td>
-                          <td>{{ $row->penjualan }}</td>
-                          <td>{{ $row->pembelian }}</td>
-                          <td>{{ $row->pengeluaran }}</td>
-                          <td>{{ $row->pendapatan }}</td>
+                            <td>{{ $key + 1 }}</td>
+                            <td>{{ $row['tanggal'] }}</td>
+                            <td>{{ $row['penjualan'] }}</td>
+                            <td>{{ $row['pembelian'] }}</td>
+                            <td>{{ $row['pengeluaran'] }}</td>
+                            <td>{{ $row['pendapatan'] }}</td>
+                            @php $total_pendapatan += str_replace('.', '', $row['pendapatan']); @endphp
                         </tr>
-                        @empty
-                        <tr>
-                            <td colspan="6" class="text-center">Data Masih Kosong!</td>
-                        </tr>
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
             </div>

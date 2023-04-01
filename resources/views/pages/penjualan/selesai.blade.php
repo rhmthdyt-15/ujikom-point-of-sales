@@ -26,8 +26,8 @@ Transaksi Penjualan
             </div>
 
             <div class="box-footer">
-                @if ($setting->tipe_nota == 1)
-                    <button class="btn btn-warning btn-flat" onclick="notaKecil('{{ route('transaksi.nota_kecil') }}', 'Nota Kecil')">Cetak Ulang Nota</button>
+                @if ($setting->tipe_nota == 2)
+                    <button class="btn btn-warning btn-flat" onclick="notaBesar('{{ route('transaksi.nota_besar') }}', 'Nota Besar')">Cetak Ulang Nota</button>
                 @endif
                     <a href="{{ route('transaksi.baru') }}" class="btn btn-primary btn-flat">Transaksi Baru</a>
             </div>
@@ -42,6 +42,10 @@ Transaksi Penjualan
     
     function notaKecil(url, title) {
         popupCenter(url, title, 625, 500);
+    }
+
+    function notaBesar(url, title) {
+        popupCenter(url, title, 900, 675);
     }
 
     function popupCenter(url, title, w, h) {

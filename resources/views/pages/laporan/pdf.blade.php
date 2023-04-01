@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Laporan Pendapatan</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css">
 </head>
 <body>
     <h3 class="text-center">Laporan Pendapatan</h3>
@@ -14,7 +15,7 @@
         Tanggal {{ tanggal_indonesia($akhir, false) }}
     </h4>
 
-    <table class="table table-striped">
+    <table class="table table-bordered">
         <thead>
             <tr>
                 <th width="5%">No</th>
@@ -37,3 +38,4 @@
     </table>
 </body>
 </html>
+

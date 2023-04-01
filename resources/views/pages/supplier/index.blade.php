@@ -12,20 +12,9 @@ Supplier
         </div>
         <div class="card-body">
             <div class="d-flex align-items-center mb-3">
-                <button type="button" class="btn btn-success mr-1" data-toggle="modal" data-target="#largeModal">
+                <button type="button" class="btn btn-outline-success mr-1" data-toggle="modal" data-target="#largeModal">
                     <i class="fa fa-plus-circle"></i> Tambah</button>
                 @includeIf('pages.supplier.tambah')
-
-                {{-- <form class="ml-auto" action="{{ route('supplier.index') }}" method="GET">
-                    <div class="input-group">
-                        <input type="text" class="form-control" name="search" placeholder="Search...">
-                        <div class="input-group-append">
-                            <button class="btn btn-secondary" type="submit">
-                                <i class="fa fa-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form> --}}
             </div>
         
             @if(Session::has('success'))
@@ -57,17 +46,17 @@ Supplier
                             <td >{{ $row->telepon }}</td>
                             <td>
                                 <div class="d-flex">
-                                    <button type="button" class="btn btn-warning mb-1" data-toggle="modal"
+                                    <button type="button" class="btn btn-outline-warning mb-1" data-toggle="modal"
                                         data-target="#largeModal-{{ $row->id_supplier }}">
-                                        <i class="fa fa-solid fa-pencil text-white"></i></button>
+                                        <i class="fa fa-solid fa-pencil"></i></button>
                                     </button>
                                     @includeIf('pages.supplier.edit', ['supplier' => $row])
     
                                     <form method="POST" action="{{ route('supplier.destroy', $row->id_supplier) }}">
                                         @method('DELETE')
                                         @csrf
-                                        <button type="submit" class="btn btn-danger ms-1 show_confirm" data-toggle="tooltip" title='Delete' style="margin-left: 5px">
-                                            <i class="fa fa-solid fa-trash text-white"></i>
+                                        <button type="submit" class="btn btn-outline-danger ms-1 show_confirm" data-toggle="tooltip" title='Delete' style="margin-left: 5px">
+                                            <i class="fa fa-solid fa-trash"></i>
                                         </button>
                                     </form>
                                 </div>

@@ -1,12 +1,12 @@
 @extends('layouts.master')
 
 @section('title')
-Daftar Penjualan
+User
 @endsection
 
 @push('css')
 <style>
-    .d-flex {
+    /* .d-flex {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -14,7 +14,7 @@ Daftar Penjualan
 
     .btn {
         margin-right: 10px;
-    }
+    } */
 </style>
 @endpush
 
@@ -22,9 +22,13 @@ Daftar Penjualan
 <div class="col-md-12">
     <div class="card">
         <div class="card-header">
-            <strong>Data Penjualan</strong>
+            <strong>Data Kasir</strong>
         </div>
         <div class="card-body">
+            <button type="button" class="btn btn-outline-success mb-1" data-toggle="modal" data-target="#largeModal">
+                <i class="fa fa-plus-circle"></i> Tambah</button>
+            </button>
+            @includeIf('pages.user.tambah')
 
             @if(Session::has('success'))
             <div class="sufee-alert alert with-close alert-success alert-dismissible fade show mt-3">
@@ -40,52 +44,36 @@ Daftar Penjualan
                         <thead>
                             <tr>
                                 <th width="5%">No</th>
-                                <th width="15%">Tanggal</th>
-                                <th>Kode Member</th>
-                                <th>Total Item</th>
-                                <th>Total Harga</th>
-                                <th>Diskon</th>
-                                <th>Total Bayar</th>
-                                <th>Kasir</th>
+                                <th>Nama</th>
+                                <th>Email</th>
                                 <th width="15%"><i class="fa fa-cog"></i></th>
                             </tr>
                         </thead>
                         <tbody>
-                          @forelse ($penjualan as $key => $row)
-                            <tr>
-                              <td>{{ $key+1 }}</td>
-                              <td width="15%">{{  tanggal_indonesia($row->created_at, false) }}</td>
-                              <td>
-                                <span class="btn btn-sm btn-success">
-                                    {{ $row->member ? $row->member->kode_member : '' }}
-                                </span>
-                            </td>
-                              <td>{{ $row->total_item }}</td>
-                              <td>Rp.{{ format_uang($row->total_harga) }}</td>
-                              <td>{{ $row->diskon }}</td>
-                              <td>Rp.{{ format_uang($row->bayar)  }}</td>
-                              <td>{{ $row->user->name}}</td>
-                              <td wiidth="15%">
-                                <div class="d-flex">
-                                    <button type="button" class="btn btn-outline-primary mb-1" data-toggle="modal"
-                                        data-target="#modal-detail-{{ $row->id_penjualan }}"
-                                        data-id="{{ $row->id_penjualan }}">
-                                        <i class="fa fa-eye "></i>
-                                    </button>
-                                    @includeIf('pages.penjualan.detail', ['id_penjualan' => $row->id_penjualan])
-                                
-                                    <form method="POST" action="{{ route('penjualan.destroy', $row->id_penjualan) }}">
-                                        @method('DELETE')
-                                        @csrf
-                                        <button type="submit" class="btn btn-outline-danger ms-1 show_confirm" data-toggle="tooltip" title='Delete'>
-                                            <i class="fa fa-solid fa-trash"></i>
+                            @foreach ($user as $key => $row)
+                             <tr>
+                                <td>{{ $key + 1 }}</td>
+                                <td>{{ $row->name }}</td>
+                                <td>{{ $row->email }}</td>
+                                <td wiidth="15%">
+                                    <div class="d-flex">
+                                        <button type="button" class="btn btn-outline-warning mb-1" data-toggle="modal"
+                                            data-target="#largeModal-{{ $row->id }}">
+                                            <i class="fa fa-solid fa-pencil"></i></button>
                                         </button>
-                                    </form>
-                                </div>                                
-                              </td>
-                            </tr>
-                          @empty                 
-                          @endforelse
+                                        @includeIf('pages.user.edit', ['user' => $row])
+        
+                                        <form method="POST" action="{{ route('user.destroy', $row->id) }}">
+                                            @method('DELETE')
+                                            @csrf
+                                            <button type="submit" class="btn btn-outline-danger ms-1 show_confirm" data-toggle="tooltip" title='Delete' style="margin-left: 5px">
+                                                <i class="fa fa-solid fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>                            
+                                  </td>
+                             </tr>
+                            @endforeach
                         </tbody>
                     </table>
             </div>

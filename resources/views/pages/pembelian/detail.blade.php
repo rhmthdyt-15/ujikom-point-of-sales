@@ -1,13 +1,18 @@
-<div class="modal fade" id="modal-detail-{{ $row->id_pembelian }}" tabindex="-1" role="dialog" aria-labelledby="modal-detail">
+<div class="modal fade" id="modal-detail-{{ $id_pembelian }}" tabindex="-1" role="dialog" aria-labelledby="modal-detail">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                        <h5 class="modal-title" id="modal-detail-{{ $row->id_pembelian }}-label">Detail Pembelian <i>{{$row->supplier->nama }}</i></h5>
+                        <h5 class="modal-title" id="modal-detail-{{ $id_pembelian }}-label">Detail Pembelian</h5>
                 {{-- <h4 class="modal-title">Detail Pembelian</h4> --}}
             </div>
             <div class="modal-body">
+                <?php
+                    $detail = \App\Models\PembelianDetail::with('produk')
+                        ->where('id_pembelian', $id_pembelian)
+                        ->get();
+                ?>
                 <table class="table table-striped table-bordered table-detail">
                     <thead>
                         <th width="5%">No</th>

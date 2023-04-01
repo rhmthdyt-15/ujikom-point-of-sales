@@ -12,7 +12,7 @@ Produk
         </div>
         <div class="card-body">
             <div class="d-flex">
-                <button type="button" class="btn btn-success mb-1" data-toggle="modal" data-target="#largeModal">
+                <button type="button" class="btn btn-outline-success mb-1" data-toggle="modal" data-target="#largeModal">
                     <i class="fa fa-plus-circle"></i> Tambah</button>
                 </button>
                 @includeIf('pages.produk.tambah')
@@ -20,12 +20,12 @@ Produk
                 <form action="{{ route('produk.delete_multiple') }}" method="POST" id="form-delete-multiple">
                     @method('DELETE')
                     @csrf
-                    <button type="submit" class="btn btn-danger mb-1 mx-1" id="btn-delete-multiple">
+                    <button type="submit" class="btn btn-outline-danger mb-1 mx-1" id="btn-delete-multiple">
                         <i class="fa fa-trash"></i> Hapus
                     </button>
                 </form>
                 
-                <button onclick="cetakBarcode('{{ route('produk.cetak_barcode') }}')" type="button" class="btn btn-primary mb-1">
+                <button onclick="cetakBarcode('{{ route('produk.cetak_barcode') }}')" type="button" class="btn btn-outline-primary mb-1">
                     <i class="fa fa-barcode"></i> Cetak Barcode
                 </button>
             </div>
@@ -75,23 +75,23 @@ Produk
                                 <td >{{ $row->nama_produk }}</td>
                                 <td >{{ $row->nama_kategori }}</td>
                                 <td >{{ $row->merk }}</td>
-                                <td >Rp.{{ format_uang($row->harga_beli)}}</td>
-                                <td >Rp.{{ format_uang($row->harga_jual)}}</td>
-                                <td >{{ $row->diskon }}</td>
+                                <td >Rp. {{ format_uang($row->harga_beli)}}</td>
+                                <td >Rp. {{ format_uang($row->harga_jual)}}</td>
+                                <td >{{ $row->diskon }}%</td>
                                 <td >{{ $row->stok }}</td>
                                 <td>
                                     <div class="d-flex">
-                                        <button type="button" class="btn btn-warning mb-1" data-toggle="modal"
+                                        <button type="button" class="btn btn-outline-warning mb-1" data-toggle="modal"
                                             data-target="#largeModal-{{ $row->id_produk }}">
-                                            <i class="fa fa-solid fa-pencil text-white"></i></button>
+                                            <i class="fa fa-solid fa-pencil"></i></button>
                                         </button>
                                         @includeIf('pages.produk.edit', ['produk' => $row])
         
                                         <form method="POST" action="{{ route('produk.destroy', $row->id_produk) }}">
                                             @method('DELETE')
                                             @csrf
-                                            <button type="submit" class="btn btn-danger ms-1 show_confirm" data-toggle="tooltip" title='Delete' style="margin-left: 5px">
-                                                <i class="fa fa-solid fa-trash text-white"></i>
+                                            <button type="submit" class="btn btn-outline-danger ms-1 show_confirm" data-toggle="tooltip" title='Delete' style="margin-left: 5px">
+                                                <i class="fa fa-solid fa-trash"></i>
                                             </button>
                                         </form>
                                     </div>

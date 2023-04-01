@@ -84,10 +84,12 @@ class PembelianController extends Controller
      */
     public function show($id)
     {
+        $pembelian = Pembelian::findOrFail($id);
         $detail = PembelianDetail::with('produk')->where('id_pembelian', $id)->get();
 
-        return view('pages.pembelian.detail', compact('detail'));
+        return view('pages.pembelian.detail', compact('pembelian', 'detail'));
     }
+
 
     /**
      * Show the form for editing the specified resource.

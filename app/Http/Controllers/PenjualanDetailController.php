@@ -46,7 +46,7 @@ class PenjualanDetailController extends Controller
             if (auth()->user()->role == 'admin') {
                 return redirect()->route('transaksi.baru');
             } else {
-                return redirect()->route('dashboard');
+                return redirect()->route('home');
             }
         }
     }

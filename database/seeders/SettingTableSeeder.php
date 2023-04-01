@@ -20,9 +20,9 @@ class SettingTableSeeder extends Seeder
             'nama_perusahaan' => 'Mat Toko',
             'alamat' => 'Jl. Kibandang Samaran Ds. Slangit',
             'telepon' => '081534779687',
-            'tipe_nota' => 1, // kecil
+            'tipe_nota' => 2, // besar
             'diskon' => 5,
-            'path_logo' => '/images/logo3.png',
+            'path_logo' => '/templates/images/logo3.png',
             'path_kartu_member' => '/images/member.png',
         ]);
     }
